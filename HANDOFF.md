@@ -108,13 +108,18 @@ The `.env.development` and `.env.production` files still reference Excalidraw se
 **Decision needed**: Which of these services should OneShot self-host vs. disable vs. replace?
 
 ### High Priority — Real-Time Sync Integration
-The web app's Canvas page (`/r/:roomId`) currently renders the stock Excalidraw collaboration system (WebSocket rooms via `VITE_APP_WS_SERVER_URL`). The CLI tool syncs via Ably/Supabase. **These two systems are not yet connected.**
+The `useCloudSync` hook (`app/hooks/useCloudSync.ts`, 342 lines) already exists and handles:
+1. Reading `#sync=ably&key=...` or `#sync=supabase&url=...&anonkey=...` from the URL hash
+2. Connecting to Ably or Supabase
+3. Anti-loop strategy (ignores own echoes via `source`/`updated_by` tags)
+4. Element reconciliation with Excalidraw's state
 
-The Canvas page needs a `useCloudSync` hook or similar that:
-1. Reads the `#sync=ably&key=...` or `#sync=supabase&url=...&anonkey=...` hash params from the URL
-2. Connects to the user's Ably channel or Supabase table
-3. Syncs incoming updates to the Excalidraw canvas state
-4. Pushes local canvas changes back to the sync adapter
+**Status**: The hook is implemented but needs end-to-end testing with the CLI daemon to verify the full flow works: CLI writes `workspace.json` → sync adapter → web canvas renders update.
+
+Additional key files in the sync chain:
+- `app/components/OneShotSync.tsx` — React component that triggers the hook
+- `app/hooks/useCloudSync.ts` — The universal sync hook
+- `server/src/index.ts` — Optional Socket.io relay server (alternative to Ably/Supabase)
 
 ### Medium Priority — CLI Publishing
 - The CLI is at version `0.1.0` and has never been published to npm
