@@ -352,7 +352,7 @@ npx oneshot start --resume <roomId>   # reuse an existing session`}
             </a>{" "}
             and copy your API key.
           </p>
-          <pre style={styles.pre">
+          <pre style={styles.pre}>
             {`# ~/.oneshot/config.json
 {
   "sync": "ably",
