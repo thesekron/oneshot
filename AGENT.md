@@ -10,7 +10,7 @@ The canvas state lives at the root of this repository:
 canvas.excalidraw.json
 ```
 
-The web UI (Excalidraw running at `http://localhost:3000`) watches this file in real time.
+The web UI (OneShot running at `http://localhost:3000`) watches this file in real time.
 **Any change you make to this file will be reflected in the UI within ~1 second.**
 
 ---
@@ -23,7 +23,7 @@ The web UI (Excalidraw running at `http://localhost:3000`) watches this file in 
 {
   "type": "excalidraw",
   "version": 2,
-  "elements": [ /* array of ExcalidrawElement */ ],
+  "elements": [ /* array of canvas elements */ ],
   "appState": { "viewBackgroundColor": "#1a1a2e" },
   "files": {}
 }
