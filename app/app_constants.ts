@@ -47,6 +47,10 @@ export const STORAGE_KEYS = {
   __LEGACY_LOCAL_STORAGE_LIBRARY: "oneshot-library",
 } as const;
 
+export const FIREBASE_STORAGE_PREFIXES = {
+  collabFiles: "files/rooms",
+} as const;
+
 export const COOKIES = {
   AUTH_STATE_COOKIE: "oneshot-auth",
 } as const;
