@@ -218,10 +218,10 @@ export default defineConfig(({ mode }) => {
           maximumFileSizeToCacheInBytes: 2.3 * 1024 ** 2, // 2.3MB
         },
         manifest: {
-          short_name: "Excalidraw",
-          name: "Excalidraw",
+          short_name: "OneShot",
+          name: "OneShot",
           description:
-            "Excalidraw is a whiteboard tool that lets you easily sketch diagrams that have a hand-drawn feel to them.",
+            "OneShot is an AI-powered whiteboard that turns your diagrams into production-ready implementation prompts.",
           icons: [
             {
               src: "android-chrome-192x192.png",
@@ -245,7 +245,7 @@ export default defineConfig(({ mode }) => {
             },
           ],
           start_url: "/",
-          id: "excalidraw",
+          id: "oneshot",
           display: "standalone",
           theme_color: "#121212",
           background_color: "#ffffff",

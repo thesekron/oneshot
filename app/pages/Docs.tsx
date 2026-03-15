@@ -8,13 +8,6 @@ const styles = {
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
-  nav: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "1.25rem 2rem",
-    borderBottom: "1px solid rgba(255,255,255,0.06)",
-  },
   navLogo: {
     fontSize: "1.1rem",
     fontWeight: 700,
@@ -36,9 +29,25 @@ const styles = {
     gap: "3rem",
     minHeight: "calc(100vh - 62px)",
   },
+  nav: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "1.25rem 2rem",
+    borderBottom: "1px solid rgba(255,255,255,0.06)",
+    position: "sticky" as const,
+    top: 0,
+    background: "#0f172a",
+    zIndex: 10,
+  },
   sidebar: {
     padding: "2.5rem 0",
     borderRight: "1px solid rgba(255,255,255,0.06)",
+    position: "sticky" as const,
+    top: "62px",
+    alignSelf: "start" as const,
+    maxHeight: "calc(100vh - 62px)",
+    overflowY: "auto" as const,
   },
   sidebarSection: {
     marginBottom: "2rem",
