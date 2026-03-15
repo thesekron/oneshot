@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const styles = {
   page: {
     minHeight: "100vh",
@@ -139,6 +141,15 @@ const styles = {
 };
 
 export default function Docs() {
+  useEffect(() => {
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, []);
+
   return (
     <div style={styles.page}>
       <nav style={styles.nav}>
