@@ -39,7 +39,7 @@ import type { AppState, BinaryFiles } from "@oneshot/excalidraw/types";
 import type { OrderedExcalidrawElement } from "@oneshot/element/types";
 import type { RemoteExcalidrawElement } from "@oneshot/excalidraw/data/reconcile";
 
-import { appJotaiStore } from "app/app-jotai";
+import { appJotaiStore } from "../app-jotai";
 import { oneShotSyncStatusAtom } from "../oneshot-jotai";
 
 // ── Credential resolution ──────────────────────────────────────────────────

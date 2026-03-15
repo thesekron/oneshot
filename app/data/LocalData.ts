@@ -26,7 +26,7 @@ import {
   get,
 } from "idb-keyval";
 
-import { appJotaiStore, atom } from "app/app-jotai";
+import { appJotaiStore, atom } from "../app-jotai";
 import { getNonDeletedElements } from "@oneshot/element";
 
 import type { LibraryPersistedData } from "@oneshot/excalidraw/data/library";

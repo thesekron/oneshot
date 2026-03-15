@@ -10,7 +10,7 @@
 
 import { useEffect } from "react";
 
-import { appJotaiStore } from "app/app-jotai";
+import { appJotaiStore } from "../app-jotai";
 
 import { useCloudSync } from "../hooks/useCloudSync";
 import { oneShotSaveFnAtom } from "../oneshot-jotai";

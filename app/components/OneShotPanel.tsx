@@ -15,7 +15,7 @@ import {
   useExcalidrawAPI,
 } from "@oneshot/excalidraw";
 import { getNonDeletedElements } from "@oneshot/element";
-import { useAtomValue } from "app/app-jotai";
+import { useAtomValue } from "../app-jotai";
 import { useState, useCallback, useRef } from "react";
 
 import { parseCanvas } from "../lib/promptExporter";
