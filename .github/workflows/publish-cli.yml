@@ -1,0 +1,54 @@
+# Publishes the OneShot CLI to npm automatically
+# when you create a new GitHub Release (e.g. v1.0.0)
+#
+# Setup required (one time):
+#   1. Go to npmjs.com → Account → Access Tokens → Generate New Token (Automation)
+#   2. Add it to GitHub: Repo Settings → Secrets → New secret → NPM_TOKEN
+
+name: Publish CLI to npm
+
+on:
+  release:
+    types: [published]   # triggers when you publish a Release on GitHub
+
+jobs:
+  publish:
+    name: Build & Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        working-directory: packages/cli
+        run: npm install
+
+      - name: Build
+        working-directory: packages/cli
+        run: npm run build
+
+      - name: Set version from release tag
+        working-directory: packages/cli
+        # GitHub release tag like "v1.2.3" → strips the "v" → sets package version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          npm version $VERSION --no-git-tag-version
+
+      - name: Publish to npm
+        working-directory: packages/cli
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "### Published oneshot@${GITHUB_REF_NAME#v} to npm ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Users can now run: \`npx oneshot\`" >> $GITHUB_STEP_SUMMARY

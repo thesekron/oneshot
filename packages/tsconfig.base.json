@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "emitDeclarationOnly": true,
+    "paths": {
+      "@oneshot/common": ["./common/src/index.ts"],
+      "@oneshot/common/*": ["./common/src/*"],
+      "@oneshot/element": ["./element/src/index.ts"],
+      "@oneshot/element/*": ["./element/src/*"],
+      "@oneshot/excalidraw": ["./excalidraw/index.tsx"],
+      "@oneshot/excalidraw/*": ["./excalidraw/*"],
+      "@oneshot/math": ["./math/src/index.ts"],
+      "@oneshot/math/*": ["./math/src/*"],
+      "@oneshot/utils": ["./utils/src/index.ts"],
+      "@oneshot/utils/*": ["./utils/src/*"]
+    }
+  }
+}

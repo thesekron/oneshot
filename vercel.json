@@ -1,0 +1,45 @@
+{
+  "public": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://oneshot.app"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Feature-Policy",
+          "value": "*"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "origin"
+        }
+      ]
+    },
+    {
+      "source": "/(Virgil|Cascadia|Assistant-Regular).woff2",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/r/:roomId", "destination": "/index.html" },
+    { "source": "/docs", "destination": "/index.html" }
+  ],
+  "outputDirectory": "app/build",
+  "installCommand": "yarn install"
+}
