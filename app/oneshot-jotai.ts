@@ -1,7 +1,7 @@
 import type { AppState, BinaryFiles } from "@oneshot/excalidraw/types";
 import type { OrderedExcalidrawElement } from "@oneshot/element/types";
 
-import { atom } from "app/app-jotai";
+import { atom } from "./app-jotai";
 
 /**
  * Holds the debounced save function registered by OneShotSync.
