@@ -40,6 +40,7 @@
     { "source": "/r/:roomId", "destination": "/index.html" },
     { "source": "/docs", "destination": "/index.html" }
   ],
+  "buildCommand": "cd .. && yarn build:packages && yarn --cwd app build:app",
   "outputDirectory": "build",
-  "installCommand": "yarn install"
+  "installCommand": "cd .. && yarn install"
 }
