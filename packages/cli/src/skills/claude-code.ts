@@ -31,7 +31,7 @@ If output is \`NOT_FOUND\` → go to **First-Time Setup** below.
 ### 2. Check for saved sessions
 
 \`\`\`bash
-npx oneshot sessions
+npx oneshot-app sessions
 \`\`\`
 
 Output:
@@ -57,8 +57,8 @@ Output:
 ### 3. Start the sync daemon
 
 \`\`\`bash
-npx oneshot start &                       # new session
-npx oneshot start --resume <roomId> &     # resume existing
+npx oneshot-app start &                       # new session
+npx oneshot-app start --resume <roomId> &     # resume existing
 \`\`\`
 
 Read the first JSON line it prints:

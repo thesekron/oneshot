@@ -5,6 +5,7 @@ import { printLogo } from "./logo.js"
 import { checkForUpdates } from "./updater.js"
 import { setupClaudeCodeSkill } from "./skills/claude-code.js"
 import { setupCursorSkill } from "./skills/cursor.js"
+import { setupAntigravitySkill } from "./skills/antigravity.js"
 import { AblySync } from "./sync/ably.js"
 import { SupabaseSync } from "./sync/supabase.js"
 import type { SyncAdapter } from "./sync/types.js"
@@ -72,12 +73,12 @@ if (!command || command === "install") {
   outputJSON({ sessions: loadSessions() })
 } else {
   console.error(`Unknown command: ${command}`)
-  console.error("Usage: npx oneshot [install|start [--resume <roomId>]|sessions]")
+  console.error("Usage: npx oneshot-app [install|start [--resume <roomId>]|sessions]")
   process.exit(1)
 }
 
 // ── install ──────────────────────────────────────────────────────────────────
-// Called by the user once: npx oneshot
+// Called by the user once: npx oneshot-app
 // Installs the Claude Code / Cursor skill and exits.
 
 async function runInstall() {
@@ -89,22 +90,24 @@ async function runInstall() {
   const agent = await p.select({
     message: "Which AI agent are you using?",
     options: [
-      { value: "claude-code", label: "Claude Code", hint: "by Anthropic" },
-      { value: "cursor",      label: "Cursor",      hint: "by Anysphere" },
-      { value: "windsurf",    label: "Windsurf",    hint: "by Codeium" },
-      { value: "other",       label: "Other / None" },
+      { value: "claude-code",   label: "Claude Code",   hint: "by Anthropic" },
+      { value: "cursor",        label: "Cursor",        hint: "by Anysphere" },
+      { value: "antigravity",   label: "Antigravity",   hint: "by Google" },
+      { value: "windsurf",      label: "Windsurf",      hint: "by Codeium" },
+      { value: "other",         label: "Other / None" },
     ],
   })
 
   if (p.isCancel(agent)) { p.cancel("Cancelled."); process.exit(0) }
 
-  if (agent === "claude-code" || agent === "cursor") {
+  if (agent === "claude-code" || agent === "cursor" || agent === "antigravity") {
     const spinner = p.spinner()
     spinner.start("Installing skill…")
 
     try {
-      if (agent === "claude-code") await setupClaudeCodeSkill()
-      if (agent === "cursor")      await setupCursorSkill()
+      if (agent === "claude-code")  await setupClaudeCodeSkill()
+      if (agent === "cursor")       await setupCursorSkill()
+      if (agent === "antigravity")  await setupAntigravitySkill()
       spinner.stop(pc.green("Skill installed"))
     } catch (err) {
       spinner.stop(pc.yellow(`Could not install skill: ${(err as Error).message}`))
@@ -116,7 +119,7 @@ async function runInstall() {
       pc.green("✔") + " Done!",
       "",
       "  Now open your project in " +
-        (agent === "claude-code" ? "Claude Code" : agent === "cursor" ? "Cursor" : "your AI agent") +
+        (agent === "claude-code" ? "Claude Code" : agent === "cursor" ? "Cursor" : agent === "antigravity" ? "Antigravity" : "your AI agent") +
         " and say:",
       pc.cyan('  "Let\'s brainstorm"') + "  or  " + pc.cyan("/oneshot"),
       "",

@@ -217,7 +217,7 @@ export default function Landing() {
   }, []);
 
   function copyCmd() {
-    navigator.clipboard.writeText("npx oneshot install").then(() => {
+    navigator.clipboard.writeText("npx oneshot-app install").then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -275,7 +275,7 @@ export default function Landing() {
           title="Click to copy"
         >
           <span style={styles.prompt}>$</span>
-          <span style={styles.cmd}>npx oneshot install</span>
+          <span style={styles.cmd}>npx oneshot-app install</span>
           <span style={{ color: "#475569", fontSize: "0.8rem" }}>
             {copied ? "✓ copied" : "copy"}
           </span>
@@ -305,7 +305,7 @@ export default function Landing() {
             <div style={styles.stepNum}>1</div>
             <div style={styles.stepTitle}>Install once</div>
             <p style={styles.stepDesc}>
-              Run <code style={styles.code}>npx oneshot install</code> — the
+              Run <code style={styles.code}>npx oneshot-app install</code> — the
               skill is added to your AI agent automatically.
             </p>
           </div>

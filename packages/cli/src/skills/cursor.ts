@@ -23,7 +23,7 @@ If \`NOT_FOUND\` → run **First-Time Setup** below.
 ### 2. Start the sync daemon
 
 \`\`\`bash
-npx oneshot start &
+npx oneshot-app start &
 \`\`\`
 
 Read the first JSON line from stdout:

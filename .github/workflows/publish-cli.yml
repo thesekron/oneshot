@@ -51,4 +51,4 @@ jobs:
         run: |
           echo "### Published oneshot@${GITHUB_REF_NAME#v} to npm ✅" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Users can now run: \`npx oneshot\`" >> $GITHUB_STEP_SUMMARY
+          echo "Users can now run: \`npx oneshot-app\`" >> $GITHUB_STEP_SUMMARY

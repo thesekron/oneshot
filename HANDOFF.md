@@ -8,7 +8,7 @@
 
 **OneShot** is an AI-powered collaborative whiteboard that lets AI agents (Claude Code, Cursor, etc.) draw on a shared canvas in real-time while humans watch and interact. It is a fork of [Excalidraw](https://github.com/excalidraw/excalidraw) rebranded and extended with:
 
-- A **CLI tool** (`npx oneshot`) that watches a local `workspace.json` file and syncs changes to the web canvas via Ably (WebSocket pub/sub) or Supabase (persistent database)
+- A **CLI tool** (`npx oneshot-app`) that watches a local `workspace.json` file and syncs changes to the web canvas via Ably (WebSocket pub/sub) or Supabase (persistent database)
 - A **web app** deployed on Vercel at `oneshot.app` that renders the canvas and receives live updates
 - **AI agent skills** that teach Claude Code / Cursor how to write Excalidraw JSON to `workspace.json`
 
@@ -38,7 +38,7 @@ oneshot/
 │   │   └── Portal.tsx            # WebSocket portal
 │   └── data/                     # Firebase/storage helpers
 ├── packages/
-│   ├── cli/                      # The `npx oneshot` CLI tool
+│   ├── cli/                      # The `npx oneshot-app` CLI tool
 │   │   ├── package.json          # name: "oneshot", version: 0.1.0
 │   │   └── src/
 │   │       ├── index.ts          # CLI entry: install, start, sessions commands
@@ -124,7 +124,7 @@ Additional key files in the sync chain:
 ### Medium Priority — CLI Publishing
 - The CLI is at version `0.1.0` and has never been published to npm
 - The `publish-cli.yml` workflow needs `NPM_TOKEN` secret set in GitHub
-- Need to test the full `npx oneshot` flow end-to-end
+- Need to test the full `npx oneshot-app` flow end-to-end
 
 ### Medium Priority — AI Generation
 - There's a Gemini/OpenRouter AI generation feature in the codebase (from earlier commits) — its current state and integration needs review
@@ -151,7 +151,7 @@ Additional key files in the sync chain:
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌────────────────────┐
 │   AI Agent       │     │  CLI Daemon       │     │  Web Canvas        │
-│  (Claude Code)   │     │  (npx oneshot)    │     │  (oneshot.app)     │
+│  (Claude Code)   │     │  (npx oneshot-app)    │     │  (oneshot.app)     │
 │                  │     │                   │     │                    │
 │  Writes to       │────▶│  chokidar watches │────▶│  Ably/Supabase     │
 │  workspace.json  │     │  workspace.json   │     │  Realtime listener │

@@ -239,7 +239,7 @@ export default function Docs() {
           <p style={styles.p}>
             Install the skill into your AI agent (Claude Code, Cursor, etc.):
           </p>
-          <pre style={styles.pre}>npx oneshot install</pre>
+          <pre style={styles.pre}>npx oneshot-app install</pre>
           <p style={styles.p}>
             This writes the oneshot skill to your agent&apos;s skills directory.
             You only need to do this once.
@@ -252,7 +252,7 @@ export default function Docs() {
           <p style={styles.p}>
             In your project directory, start a session:
           </p>
-          <pre style={styles.pre}>{"npx oneshot start"}</pre>
+          <pre style={styles.pre}>{"npx oneshot-app start"}</pre>
           <p style={styles.p}>
             This prints a URL like{" "}
             <code
@@ -317,7 +317,7 @@ export default function Docs() {
           <p style={styles.p}>
             Installs the skill file into your AI agent&apos;s skills directory.
           </p>
-          <pre style={styles.pre}>npx oneshot install</pre>
+          <pre style={styles.pre}>npx oneshot-app install</pre>
 
           <h2 id="cli-start" style={styles.h2}>
             oneshot start
@@ -326,8 +326,8 @@ export default function Docs() {
             Starts the sync daemon and prints a room URL.
           </p>
           <pre style={styles.pre}>
-            {`npx oneshot start
-npx oneshot start --resume <roomId>   # reuse an existing session`}
+            {`npx oneshot-app start
+npx oneshot-app start --resume <roomId>   # reuse an existing session`}
           </pre>
 
           <table style={styles.table}>
@@ -353,7 +353,7 @@ npx oneshot start --resume <roomId>   # reuse an existing session`}
             oneshot sessions
           </h2>
           <p style={styles.p}>Lists all saved sessions.</p>
-          <pre style={styles.pre}>npx oneshot sessions</pre>
+          <pre style={styles.pre}>npx oneshot-app sessions</pre>
 
           {/* Config */}
           <h2 id="config-ably" style={styles.h2}>

@@ -4,7 +4,7 @@
  * Universal React hook that abstracts the active cloud-sync strategy.
  *
  * Credential resolution order (highest priority first):
- *   1. URL hash params  — set by `npx oneshot start`, e.g.
+ *   1. URL hash params  — set by `npx oneshot-app start`, e.g.
  *        /#sync=ably&key=<key>&ch=oneshot-<roomId>
  *        /#sync=supabase&url=<url>&anonkey=<key>&workspace=<roomId>
  *      The hash is never sent to the server, so credentials are browser-only.

@@ -4,14 +4,14 @@
 Open a canvas, share the URL, and draw together — or let your AI agent write directly to the canvas while you watch it happen in real time.
 
 ```bash
-npx oneshot
+npx oneshot-app
 ```
 
 ---
 
 ## What it does
 
-`npx oneshot` starts a session in your terminal:
+`npx oneshot-app` starts a session in your terminal:
 - Creates a shared room with a unique URL
 - Opens the canvas in your browser
 - Gives your AI agent (Claude Code, Cursor, etc.) instructions to draw on the canvas by editing `canvas.json`
@@ -23,7 +23,7 @@ npx oneshot
 
 ```bash
 # Start a session
-npx oneshot
+npx oneshot-app
 
 # You'll see:
 #   ◆ Room ready
@@ -38,7 +38,7 @@ Share the URL with teammates. Point your AI agent at `AGENT.md` — it explains 
 ## How it works
 
 ```
-terminal (npx oneshot)
+terminal (npx oneshot-app)
     │
     ├── watches canvas.json (local file)
     ├── syncs changes via Ably/Supabase
@@ -53,7 +53,7 @@ The AI agent edits `canvas.json`. The CLI detects the change and pushes it to th
 
 ## AI agent setup
 
-When you run `npx oneshot`, it writes an `AGENT.md` file to your project root. This file tells your AI agent:
+When you run `npx oneshot-app`, it writes an `AGENT.md` file to your project root. This file tells your AI agent:
 - The canvas file format
 - How to add, modify, and delete elements
 - How to connect shapes with arrows

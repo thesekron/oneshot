@@ -1,5 +1,5 @@
 {
-  "name": "oneshot-app",
+  "name": "@oneshot/web",
   "version": "1.0.0",
   "private": true,
   "homepage": ".",
