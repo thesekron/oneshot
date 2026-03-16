@@ -6,7 +6,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://oneshot.app"
+          "value": "*"
         },
         {
           "key": "X-Content-Type-Options",

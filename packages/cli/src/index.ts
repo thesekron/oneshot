@@ -17,7 +17,7 @@ import { randomBytes } from "crypto"
 
 const VERSION = "0.1.0"
 const WORKSPACE_FILE = "workspace.json"
-const ONESHOT_APP_URL = "https://oneshot.app"
+const ONESHOT_APP_URL = "https://oneshot-release.vercel.app"
 const CONFIG_PATH = path.join(os.homedir(), ".oneshot", "config.json")
 
 const SESSIONS_PATH = path.join(os.homedir(), ".oneshot", "sessions.json")

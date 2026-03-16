@@ -65,7 +65,7 @@ Read the first JSON line it prints:
 
 **Success:**
 \`\`\`json
-{"ready":true,"roomUrl":"https://oneshot.app/#sync=...","roomId":"abc123","resumed":false,"workspaceFile":"/path/to/workspace.json"}
+{"ready":true,"roomUrl":"https://oneshot-release.vercel.app/#sync=...","roomId":"abc123","resumed":false,"workspaceFile":"/path/to/workspace.json"}
 \`\`\`
 
 **Error:**
