@@ -14,8 +14,10 @@ import fs from "fs"
 import path from "path"
 import os from "os"
 import { randomBytes } from "crypto"
+import { createRequire } from "module"
 
-const VERSION = "0.1.0"
+const require = createRequire(import.meta.url)
+const { version: VERSION } = require("../package.json") as { version: string }
 const WORKSPACE_FILE = "workspace.json"
 const ONESHOT_APP_URL = "https://oneshot-release.vercel.app"
 const CONFIG_PATH = path.join(os.homedir(), ".oneshot", "config.json")
