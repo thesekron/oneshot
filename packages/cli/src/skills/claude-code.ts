@@ -300,12 +300,15 @@ Add arrow id to \`boundElements\` on both endpoint shapes:
 `
 
 export async function setupClaudeCodeSkill() {
-  const skillsDir = path.join(os.homedir(), ".claude", "skills")
+  const skillDir = path.join(os.homedir(), ".claude", "skills", "oneshot")
 
   try {
-    fs.mkdirSync(skillsDir, { recursive: true })
-    const skillPath = path.join(skillsDir, "oneshot.md")
+    fs.mkdirSync(skillDir, { recursive: true })
+    const skillPath = path.join(skillDir, "SKILL.md")
     fs.writeFileSync(skillPath, SKILL_CONTENT)
+    // Clean up old flat-file format if it exists
+    const oldPath = path.join(os.homedir(), ".claude", "skills", "oneshot.md")
+    if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath)
     console.log(pc.green(`  ✔ OneShot skill installed for Claude Code`))
     console.log(pc.dim(`    Location: ${skillPath}`))
   } catch (err) {
