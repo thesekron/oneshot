@@ -3545,7 +3545,7 @@
     iceberg-js "^0.8.1"
     tslib "2.8.1"
 
-"@supabase/supabase-js@^2.49.1":
+"@supabase/supabase-js@^2.0.0", "@supabase/supabase-js@^2.49.1":
   version "2.99.1"
   resolved "https://registry.yarnpkg.com/@supabase/supabase-js/-/supabase-js-2.99.1.tgz#7b7e37e701a80afa8726d73a62477bd9188d5b21"
   integrity sha512-5MRoYD9ffXq8F6a036dm65YoSHisC3by/d22mauKE99Vrwf792KxYIIr/iqCX7E4hkuugbPZ5EGYHTB7MKy6Vg==
@@ -4540,7 +4540,7 @@ abab@^2.0.6:
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
   integrity sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==
 
-ably@^2.6.1:
+ably@^2.0.0, ably@^2.6.1:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/ably/-/ably-2.20.0.tgz#f2b054f3b71864c16867b6a51f032443f6576b9a"
   integrity sha512-jTNUKKTnnG0A+DpK96+AU56nIrt2xXdliidNOl2ShQSHYXqXAvnK+q9V6lJj88ek0ZMvm23ZzV9inuzmkV16vQ==
