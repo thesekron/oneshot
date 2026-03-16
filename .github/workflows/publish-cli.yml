@@ -28,7 +28,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: packages/cli
-        run: npm install
+        run: |
+          cd ../..
+          npm pkg delete scripts.prepare
+          cd packages/cli
+          npm install
 
       - name: Build
         working-directory: packages/cli
@@ -49,6 +53,6 @@ jobs:
 
       - name: Summary
         run: |
-          echo "### Published oneshot@${GITHUB_REF_NAME#v} to npm ✅" >> $GITHUB_STEP_SUMMARY
+          echo "### Published oneshot-app@${GITHUB_REF_NAME#v} to npm" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Users can now run: \`npx oneshot-app\`" >> $GITHUB_STEP_SUMMARY
