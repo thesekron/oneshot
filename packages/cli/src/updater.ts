@@ -3,7 +3,7 @@ import pc from "picocolors"
 
 export async function checkForUpdates(currentVersion: string) {
   try {
-    const res = await fetch("https://registry.npmjs.org/oneshot/latest", {
+    const res = await fetch("https://registry.npmjs.org/oneshot-app/latest", {
       signal: AbortSignal.timeout(3000),
     })
     const data = (await res.json()) as { version?: string }
@@ -13,7 +13,7 @@ export async function checkForUpdates(currentVersion: string) {
       p.log.warn(
         [
           `Update available: ${pc.dim(currentVersion)} → ${pc.green(latest)}`,
-          `Run: ${pc.cyan("npm install -g oneshot@latest")}`,
+          `Run: ${pc.cyan("npx oneshot-app@latest")}`,
         ].join("\n"),
       )
     }
