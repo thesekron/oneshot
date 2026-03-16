@@ -8,7 +8,7 @@ export const EncryptedIcon = () => {
   return (
     <a
       className="encrypted-icon tooltip"
-      href="https://oneshot.app/docs"
+      href="https://oneshot-release.vercel.app/docs"
       target="_blank"
       rel="noopener"
       aria-label={t("encrypted.link")}

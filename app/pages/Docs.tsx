@@ -262,7 +262,7 @@ export default function Docs() {
                 fontSize: "0.9em",
               }}
             >
-              https://oneshot.app/r/abc123#...
+              https://oneshot-release.vercel.app/r/abc123#...
             </code>
             . Open it in your browser. Then ask your AI agent to draw
             something — the canvas updates in real-time.

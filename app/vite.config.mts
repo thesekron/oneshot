@@ -125,7 +125,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       Sitemap({
-        hostname: "https://oneshot.app",
+        hostname: "https://oneshot-release.vercel.app",
         outDir: "build",
         changefreq: "monthly",
         // its static in public folder

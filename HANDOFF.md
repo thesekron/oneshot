@@ -9,7 +9,7 @@
 **OneShot** is an AI-powered collaborative whiteboard that lets AI agents (Claude Code, Cursor, etc.) draw on a shared canvas in real-time while humans watch and interact. It is a fork of [Excalidraw](https://github.com/excalidraw/excalidraw) rebranded and extended with:
 
 - A **CLI tool** (`npx oneshot-app`) that watches a local `workspace.json` file and syncs changes to the web canvas via Ably (WebSocket pub/sub) or Supabase (persistent database)
-- A **web app** deployed on Vercel at `oneshot.app` that renders the canvas and receives live updates
+- A **web app** deployed on Vercel at `oneshot-release.vercel.app` that renders the canvas and receives live updates
 - **AI agent skills** that teach Claude Code / Cursor how to write Excalidraw JSON to `workspace.json`
 
 **GitHub repo**: `thesekron/oneshot`
@@ -151,7 +151,7 @@ Additional key files in the sync chain:
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌────────────────────┐
 │   AI Agent       │     │  CLI Daemon       │     │  Web Canvas        │
-│  (Claude Code)   │     │  (npx oneshot-app)    │     │  (oneshot.app)     │
+│  (Claude Code)   │     │  (npx oneshot-app)    │     │  (oneshot-release.vercel.app)     │
 │                  │     │                   │     │                    │
 │  Writes to       │────▶│  chokidar watches │────▶│  Ably/Supabase     │
 │  workspace.json  │     │  workspace.json   │     │  Realtime listener │

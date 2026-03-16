@@ -348,7 +348,7 @@ export default function Landing() {
             GitHub
           </a>
           <a
-            href="https://npmjs.com/package/oneshot"
+            href="https://npmjs.com/package/oneshot-app"
             style={{ color: "#475569", textDecoration: "none" }}
             target="_blank"
             rel="noopener noreferrer"

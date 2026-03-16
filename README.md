@@ -27,7 +27,7 @@ npx oneshot-app
 
 # You'll see:
 #   ◆ Room ready
-#   ↗ https://oneshot.app/r/abc123
+#   ↗ https://oneshot-release.vercel.app/r/abc123
 #   ✦ Instructions written to AGENT.md
 ```
 
@@ -43,7 +43,7 @@ terminal (npx oneshot-app)
     ├── watches canvas.json (local file)
     ├── syncs changes via Ably/Supabase
     │
-    └──▶ browser (oneshot.app)
+    └──▶ browser (oneshot-release.vercel.app)
               real-time canvas
 ```
 

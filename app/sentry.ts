@@ -3,8 +3,7 @@ import * as Sentry from "@sentry/browser";
 import callsites from "callsites";
 
 const SentryEnvHostnameMap: { [key: string]: string } = {
-  "oneshot.app": "production",
-  "staging.oneshot.app": "staging",
+  "oneshot-release.vercel.app": "production",
   "vercel.app": "staging",
 };
 
