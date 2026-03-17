@@ -1,11 +1,14 @@
-import { trackEvent } from "../../analytics";
 import { useTunnels } from "../../context/tunnels";
-import { useI18n } from "../../i18n";
 import { useExcalidrawSetAppState } from "../App";
 import DropdownMenu from "../dropdownMenu/DropdownMenu";
-import { brainIcon } from "../icons";
 
 import type { JSX, ReactNode } from "react";
+
+const OneShotIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100">
+    <path fillRule="evenodd" d="M50,8 A42,42,0,1,1,50,92 A42,42,0,1,1,50,8 Z M50,28 A22,22,0,1,0,50,72 A22,22,0,1,0,50,28 Z" fill="currentColor"/>
+  </svg>
+);
 
 export const TTDDialogTrigger = ({
   children,
@@ -14,7 +17,6 @@ export const TTDDialogTrigger = ({
   children?: ReactNode;
   icon?: JSX.Element;
 }) => {
-  const { t } = useI18n();
   const { TTDDialogTriggerTunnel } = useTunnels();
   const setAppState = useExcalidrawSetAppState();
 
@@ -22,13 +24,13 @@ export const TTDDialogTrigger = ({
     <TTDDialogTriggerTunnel.In>
       <DropdownMenu.Item
         onSelect={() => {
-          trackEvent("ai", "dialog open", "ttd");
-          setAppState({ openDialog: { name: "ttd", tab: "text-to-diagram" } });
+          setAppState({
+            openSidebar: { name: "default", tab: "oneshot" },
+          });
         }}
-        icon={icon ?? brainIcon}
-        badge={<DropdownMenu.Item.Badge>AI</DropdownMenu.Item.Badge>}
+        icon={icon ?? <OneShotIcon />}
       >
-        {children ?? t("labels.textToDiagram")}
+        {children ?? "OneShot Prompt"}
       </DropdownMenu.Item>
     </TTDDialogTriggerTunnel.In>
   );
