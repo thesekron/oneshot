@@ -24,6 +24,9 @@ const styles = {
     letterSpacing: "-0.02em",
     color: "#f1f5f9",
     textDecoration: "none",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
   },
   navLinks: {
     display: "flex",
@@ -228,6 +231,42 @@ export default function Landing() {
       {/* Nav */}
       <nav style={styles.nav}>
         <a href="/" style={styles.navLogo}>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="100" height="100" rx="18" ry="18" fill="#1a1a2e" />
+            <defs>
+              <mask id="nav-logo-m">
+                <rect width="100" height="100" fill="white" />
+                <rect
+                  x="3"
+                  y="25"
+                  width="30"
+                  height="14"
+                  fill="black"
+                  transform="rotate(30, 18, 32)"
+                />
+                <rect
+                  x="67"
+                  y="61"
+                  width="30"
+                  height="14"
+                  fill="black"
+                  transform="rotate(30, 82, 68)"
+                />
+              </mask>
+            </defs>
+            <path
+              fillRule="evenodd"
+              d="M50,3 A47,47,0,1,1,50,97 A47,47,0,1,1,50,3 Z M50,23 A27,27,0,1,0,50,77 A27,27,0,1,0,50,23 Z"
+              fill="#e8e8e8"
+              mask="url(#nav-logo-m)"
+            />
+          </svg>
           oneshot
         </a>
         <div style={styles.navLinks}>
