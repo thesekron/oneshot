@@ -62,21 +62,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!------------------------------------------------------------------------->
-    <% if (typeof PROD != 'undefined' && PROD == true) { %>
-    <!-- Following placeholder is replaced during the build step -->
-    <!-- PLACEHOLDER:ONESHOT_APP_FONTS -->
+    <script>
+      window.EXCALIDRAW_ASSET_PATH = window.origin;
+    </script>
 
+    <% if (typeof PROD != 'undefined' && PROD == true) { %>
     <!-- Register Assistant as the UI font, before the scene inits -->
     <link
       rel="stylesheet"
       href="../packages/excalidraw/fonts/fonts.css"
       type="text/css"
     />
-
-    <% } else { %>
-    <script>
-      window.EXCALIDRAW_ASSET_PATH = window.origin;
-    </script>
     <% } %>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
