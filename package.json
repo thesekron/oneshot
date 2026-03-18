@@ -26,7 +26,6 @@
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "3.3.1",
     "http-server": "14.1.1",
-    "husky": "7.0.4",
     "jsdom": "22.1.0",
     "lint-staged": "12.3.7",
     "pepjs": "0.5.3",
@@ -81,8 +80,7 @@
     "fix:code": "yarn test:code --fix",
     "fix:other": "yarn prettier --write",
     "fix": "yarn fix:other && yarn fix:code",
-    "prepare": "husky install",
-    "prettier": "prettier \"**/*.{css,scss,json,md,html,yml}\" --ignore-path=.eslintignore",
+    "prettier":"prettier \"**/*.{css,scss,json,md,html,yml}\" --ignore-path=.eslintignore",
     "rm:build": "rimraf --glob app/build app/dist app/dev-dist packages/*/dist packages/*/build",
     "rm:node_modules": "rimraf --glob node_modules app/node_modules packages/*/node_modules",
     "clean-install": "yarn rm:node_modules && yarn install"

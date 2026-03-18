@@ -107,12 +107,12 @@ mkdir -p ~/.oneshot
 
 For Ably:
 \`\`\`json
-{"sync":"ably","apiKey":"<paste key here>"}
+{"sync":"ably","apiKey":"<paste key here>","agentId":"claude","agentLabel":"Claude"}
 \`\`\`
 
 For Supabase:
 \`\`\`json
-{"sync":"supabase","supabaseUrl":"<url>","supabaseKey":"<key>"}
+{"sync":"supabase","supabaseUrl":"<url>","supabaseKey":"<key>","agentId":"claude","agentLabel":"Claude"}
 \`\`\`
 
 Write to: \`~/.oneshot/config.json\`
@@ -130,6 +130,21 @@ Write to: \`~/.oneshot/config.json\`
 3. **One question → one canvas update** — reflect each user answer immediately
 4. **Connect, never orphan** — every new element connects to existing nodes via arrows
 5. **One question at a time** — never ask two questions in one message
+
+---
+
+## Annotation Protocol
+
+Before every canvas update, scan all non-deleted elements where
+\`customData?.oneshot_type === "annotation"\` and \`customData?.addressed !== true\`.
+
+For each unaddressed annotation:
+1. Read the \`text\` field — this is a note left by the human
+2. Draw a response node near it connected by a labeled arrow
+3. Set \`customData.addressed = true\` and \`backgroundColor = "#bbf7d0"\` on the annotation element
+4. Only then proceed with your planned canvas additions
+
+This is how humans leave feedback mid-session without interrupting your flow.
 
 ---
 
@@ -283,6 +298,37 @@ Add arrow id to \`boundElements\` on both endpoint shapes:
   "files": {}
 }
 \`\`\`
+
+---
+
+## DSL Format (Recommended)
+
+Instead of editing \\`workspace.json\\` directly, write \\`workspace.oneshot.json\\` with this simpler format.
+The CLI detects it, compiles it into \\`workspace.json\\`, and deletes it automatically.
+
+\\`\\`\\`json
+{
+  "oneshot": true,
+  "version": 1,
+  "intent": "What this update does (optional)",
+  "add": [
+    { "id": "gateway", "shape": "rect",    "label": "API Gateway", "color": "default" },
+    { "id": "user",    "shape": "ellipse", "label": "User",        "color": "blue"    }
+  ],
+  "connect": [
+    { "from": "user", "to": "gateway", "label": "HTTP" }
+  ],
+  "update": [
+    { "id": "gateway", "label": "API Gateway v2", "color": "green" }
+  ],
+  "delete": ["old-element-id"]
+}
+\\`\\`\\`
+
+Shapes: \\`rect\\` | \\`ellipse\\` | \\`diamond\\` | \\`frame\\`
+Colors: \\`default\\` | \\`blue\\` | \\`green\\` | \\`orange\\` | \\`red\\` | \\`cyan\\` | \\`purple\\`
+
+Direct \\`workspace.json\\` edits still work — DSL is the preferred interface.
 
 ---
 

@@ -40,7 +40,7 @@ import type { OrderedExcalidrawElement } from "@oneshot/element/types";
 import type { RemoteExcalidrawElement } from "@oneshot/excalidraw/data/reconcile";
 
 import { appJotaiStore } from "../app-jotai";
-import { oneShotSyncStatusAtom } from "../oneshot-jotai";
+import { oneShotSyncStatusAtom, oneShotCursorAtom } from "../oneshot-jotai";
 
 // ── Credential resolution ──────────────────────────────────────────────────
 // Supports two URL formats (both keep credentials in the hash, off the server):
@@ -118,6 +118,10 @@ export type SaveFn = (
 
 // ── Shared: reconcile + apply remote elements ──────────────────────────────
 
+// Auto-clear cursor after this many ms of no new pushes from the CLI
+const CURSOR_TTL_MS = 3500;
+let cursorClearTimer: ReturnType<typeof setTimeout> | null = null;
+
 function applyRemoteElements(
   api: NonNullable<ReturnType<typeof useExcalidrawAPI>>,
   remote: RemoteExcalidrawElement[],
@@ -125,12 +129,34 @@ function applyRemoteElements(
 ): void {
   if (!remote.length) return;
 
+  // Separate cursor element from real elements
+  const cursorEl = remote.find(
+    (el) => (el as any).customData?.oneshot_type === "cursor",
+  );
+  const realElements = remote.filter(
+    (el) => (el as any).customData?.oneshot_type !== "cursor",
+  );
+
+  // Update cursor atom — shown as floating label in the UI
+  if (cursorEl) {
+    appJotaiStore.set(oneShotCursorAtom, cursorEl as any);
+    if (cursorClearTimer) clearTimeout(cursorClearTimer);
+    cursorClearTimer = setTimeout(() => {
+      appJotaiStore.set(oneShotCursorAtom, null);
+    }, CURSOR_TTL_MS);
+  } else {
+    appJotaiStore.set(oneShotCursorAtom, null);
+    if (cursorClearTimer) clearTimeout(cursorClearTimer);
+  }
+
+  if (!realElements.length) return;
+
   const appState = api.getAppState();
   const local =
     api.getSceneElementsIncludingDeleted() as OrderedExcalidrawElement[];
 
   const restored = restoreElements(
-    remote,
+    realElements,
     local,
   ) as RemoteExcalidrawElement[];
   const reconciled = reconcileElements(local, restored, appState);
@@ -328,6 +354,22 @@ export function useCloudSync(): SaveFn {
               });
             if (error) throw error;
             appJotaiStore.set(oneShotSyncStatusAtom, "idle");
+
+            // Record snapshot for session history — non-fatal if table missing
+            supabaseRef.current
+              .from("snapshots")
+              .insert({
+                workspace_id: SB_WORKSPACE,
+                elements: filtered,
+                app_state: appStateSnapshot,
+                author: "human",
+                agent_label: "You",
+              })
+              .then(({ error: snapErr }) => {
+                if (snapErr) {
+                  console.debug("[OneShot] snapshot insert failed:", snapErr.message);
+                }
+              });
           } catch (err) {
             console.warn("[OneShot] Supabase upsert failed:", err);
             appJotaiStore.set(oneShotSyncStatusAtom, "error");
