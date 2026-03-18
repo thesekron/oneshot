@@ -9,6 +9,7 @@ import ExcalidrawApp from "./App";
 import Landing from "./pages/Landing";
 import Canvas from "./pages/Canvas";
 import Docs from "./pages/Docs";
+import ReplayPage from "./pages/ReplayPage";
 
 window.__EXCALIDRAW_SHA__ = import.meta.env.VITE_APP_GIT_SHA;
 const rootElement = document.getElementById("root")!;
@@ -22,6 +23,8 @@ root.render(
         <Route path="/" element={<HomeRouter />} />
         {/* Canvas room: /r/:roomId#sync=...&key=... */}
         <Route path="/r/:roomId" element={<Canvas />} />
+        {/* Read-only session replay: /r/:roomId/replay */}
+        <Route path="/r/:roomId/replay" element={<ReplayPage />} />
         {/* Docs */}
         <Route path="/docs" element={<Docs />} />
         {/* Fallback: render full app (e.g. /#json=... share links) */}

@@ -16,11 +16,11 @@ import {
 } from "@oneshot/excalidraw";
 import { getNonDeletedElements } from "@oneshot/element";
 import { useAtomValue } from "../app-jotai";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 
 import { parseCanvas } from "../lib/promptExporter";
 import { generatePromptWithOpenRouter } from "../lib/openrouterClient";
-import { oneShotSyncStatusAtom } from "../oneshot-jotai";
+import { oneShotSyncStatusAtom, oneShotCursorAtom } from "../oneshot-jotai";
 
 import type { SyncStatus } from "../oneshot-jotai";
 
@@ -163,6 +163,7 @@ export const OneShotPanel = () => {
   const excalidrawAPI = useExcalidrawAPI();
   const syncStatus = useAtomValue(oneShotSyncStatusAtom);
   const { text: statusText, color: statusColor } = syncStatusLabel(syncStatus);
+  const aiCursor = useAtomValue(oneShotCursorAtom);
 
   // Persisted settings
   const [apiKey, setApiKey] = useState<string>(
@@ -246,6 +247,92 @@ export const OneShotPanel = () => {
       setIsGenerating(false);
     }
   }, [excalidrawAPI, apiKey, model]);
+
+  // ── Active Agents (derived from scene customData) ────────────────────────
+  // Reads unique author+authorColor pairs from all non-deleted elements.
+  // Re-derives whenever aiCursor changes (i.e. every AI push) so the list
+  // stays up to date without a separate subscription.
+  const activeAgents = useMemo(() => {
+    if (!excalidrawAPI) return []
+    const seen = new Map<string, string>()
+    for (const el of excalidrawAPI.getSceneElements()) {
+      const cd = (el as any).customData
+      if (!el.isDeleted && cd?.author && cd?.authorColor) {
+        seen.set(cd.author, cd.authorColor)
+      }
+    }
+    return Array.from(seen.entries()).map(([author, color]) => ({ author, color }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [excalidrawAPI, aiCursor])
+
+  // ── Add Annotation Note ─────────────────────────────────────────────────
+  // Drops a yellow sticky-note text element at the canvas viewport center.
+  // The AI is taught (via skill files) to detect and respond to these.
+
+  const handleAddNote = useCallback(() => {
+    if (!excalidrawAPI) return;
+
+    const appState = excalidrawAPI.getAppState();
+    const existingElements = excalidrawAPI.getSceneElements();
+
+    // Place note at viewport center
+    const x = appState.scrollX
+      ? -appState.scrollX + appState.width / 2 - 100
+      : 200;
+    const y = appState.scrollY
+      ? -appState.scrollY + appState.height / 2 - 30
+      : 200;
+
+    const noteId = `annotation-${Date.now()}`;
+    const note = {
+      id: noteId,
+      type: "text" as const,
+      x,
+      y,
+      width: 200,
+      height: 60,
+      angle: 0,
+      strokeColor: "#ca8a04",
+      backgroundColor: "#fef08a",
+      fillStyle: "solid" as const,
+      strokeWidth: 1,
+      roughness: 0,
+      opacity: 100,
+      text: "💬 Note for AI",
+      fontSize: 14,
+      fontFamily: 1,
+      textAlign: "left" as const,
+      verticalAlign: "top" as const,
+      containerId: null,
+      originalText: "💬 Note for AI",
+      autoResize: true,
+      lineHeight: 1.25,
+      version: 1,
+      versionNonce: Math.floor(Math.random() * 1000000),
+      isDeleted: false,
+      groupIds: [],
+      boundElements: [],
+      updated: Date.now(),
+      link: null,
+      locked: false,
+      customData: {
+        oneshot_type: "annotation",
+        author: "human",
+        addressed: false,
+      },
+    };
+
+    excalidrawAPI.updateScene({
+      elements: [...existingElements, note as any],
+    });
+
+    // Put the element in edit mode so the user can type immediately
+    excalidrawAPI.updateScene({
+      appState: {
+        editingTextElement: note as any,
+      },
+    });
+  }, [excalidrawAPI]);
 
   // ── Copy to Clipboard ───────────────────────────────────────────────────
 
@@ -434,6 +521,86 @@ ${svgStr}
           </span>
         </div>
       </div>
+
+      {/* ── AI Cursor indicator ──────────────────────────────────────────── */}
+      {aiCursor && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "6px 10px",
+            borderRadius: "6px",
+            background: "#38bdf815",
+            border: "1px solid #38bdf830",
+            fontSize: "12px",
+            color: "#38bdf8",
+            animation: "oneshot-cursor-pulse 1.4s ease-in-out infinite",
+          }}
+        >
+          <span
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              background: "#38bdf8",
+              display: "inline-block",
+              flexShrink: 0,
+            }}
+          />
+          {(aiCursor as any).text ?? "AI is drawing…"}
+          <style>{`
+            @keyframes oneshot-cursor-pulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.5; }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* ── Active Agents Legend ─────────────────────────────────────────── */}
+      {activeAgents.length > 0 && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            flexWrap: "wrap",
+            padding: "5px 10px",
+            borderRadius: "6px",
+            background: "var(--color-surface-low)",
+            border: "1px solid var(--color-surface-mid)",
+            fontSize: "11px",
+          }}
+        >
+          <span style={{ color: "var(--color-on-surface-low)", fontWeight: 600, flexShrink: 0 }}>
+            Active:
+          </span>
+          {activeAgents.map(({ author, color }) => (
+            <span
+              key={author}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                color,
+              }}
+            >
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: "50%",
+                  background: color,
+                  display: "inline-block",
+                  flexShrink: 0,
+                }}
+              />
+              {author.charAt(0).toUpperCase() + author.slice(1)}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* ── Settings Panel (collapsible) ─────────────────────────────────── */}
       {showSettings && (
@@ -660,6 +827,42 @@ ${svgStr}
             </button>
           </>
         )}
+      </div>
+
+      <hr style={{ border: "none", borderTop: "1px solid var(--color-surface-mid)" }} />
+
+      {/* ── Annotation ──────────────────────────────────────────────────── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+        <div style={{ fontWeight: 600 }}>Leave a Note for the AI</div>
+        <div
+          style={{
+            fontSize: "11px",
+            color: "var(--color-on-surface-low)",
+            lineHeight: 1.4,
+          }}
+        >
+          Drop a yellow sticky note on the canvas. The AI will read it on its
+          next turn, respond with a connected node, and mark the note green.
+        </div>
+        <button
+          type="button"
+          onClick={handleAddNote}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "7px 12px",
+            borderRadius: "6px",
+            border: "1px solid #ca8a0444",
+            background: "#fef08a18",
+            cursor: "pointer",
+            color: "#ca8a04",
+            fontWeight: 600,
+            fontSize: "12px",
+          }}
+        >
+          💬 Add Note
+        </button>
       </div>
 
       <hr style={{ border: "none", borderTop: "1px solid var(--color-surface-mid)" }} />

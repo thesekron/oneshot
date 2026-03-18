@@ -182,6 +182,72 @@ print("Canvas updated.")
 
 ---
 
+## DSL Format (Recommended)
+
+Instead of writing raw Excalidraw JSON, write `workspace.oneshot.json` in the project root.
+The CLI daemon detects it, compiles it into `workspace.json`, and deletes it automatically.
+
+```json
+{
+  "oneshot": true,
+  "version": 1,
+  "intent": "What this update does (optional, shown in session history)",
+  "add": [
+    { "id": "gateway", "shape": "rect",    "label": "API Gateway", "color": "default" },
+    { "id": "user",    "shape": "ellipse", "label": "User",        "color": "blue"    }
+  ],
+  "connect": [
+    { "from": "user", "to": "gateway", "label": "HTTP" }
+  ],
+  "update": [
+    { "id": "gateway", "label": "API Gateway v2", "color": "green" }
+  ],
+  "delete": ["old-element-id"]
+}
+```
+
+**Shapes:** `rect` | `ellipse` | `diamond` | `frame`
+**Colors:** `default` | `blue` | `green` | `orange` | `red` | `cyan` | `purple`
+
+The `id` field in DSL is your stable reference — the CLI generates the actual Excalidraw UUID internally.
+To connect a new node to an existing one, use the existing node's `customData.dsl_id` value as the `from`/`to`.
+
+Direct `workspace.json` edits still work (raw format below) — but DSL is less error-prone.
+
+---
+
+## Annotation Protocol
+
+Humans can leave sticky-note feedback on the canvas using annotation elements.
+**Before any canvas update**, check for unaddressed annotations:
+
+```python
+import json, pathlib
+
+canvas = json.loads(pathlib.Path("workspace.json").read_text())
+annotations = [
+    el for el in canvas["elements"]
+    if not el.get("isDeleted")
+    and el.get("customData", {}).get("oneshot_type") == "annotation"
+    and not el.get("customData", {}).get("addressed")
+]
+
+for ann in annotations:
+    print(f"Unaddressed annotation: {ann.get('text', '')} at ({ann['x']}, {ann['y']})")
+```
+
+For each unaddressed annotation:
+1. Read the `text` field — this is feedback from the human
+2. Add a response node near it, connected by a labeled arrow
+3. Mark it addressed by setting `customData.addressed = true` and `backgroundColor = "#bbf7d0"` (green)
+
+**Annotation element signature:**
+- `type: "text"`, `backgroundColor: "#fef08a"` (yellow = unaddressed)
+- `customData: { "oneshot_type": "annotation", "author": "human", "addressed": false }`
+- When addressed: `backgroundColor: "#bbf7d0"` (green), `customData.addressed: true`
+
+---
+
 ## Workflow Tips
 
 1. **Read first** — always load the current canvas before modifying it to avoid overwriting the human's work.

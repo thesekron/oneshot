@@ -6,6 +6,7 @@ import { checkForUpdates } from "./updater.js"
 import { setupClaudeCodeSkill } from "./skills/claude-code.js"
 import { setupCursorSkill } from "./skills/cursor.js"
 import { setupAntigravitySkill } from "./skills/antigravity.js"
+import { setupWindsurfSkill } from "./skills/windsurf.js"
 import { AblySync } from "./sync/ably.js"
 import { SupabaseSync } from "./sync/supabase.js"
 import type { SyncAdapter } from "./sync/types.js"
@@ -15,10 +16,13 @@ import path from "path"
 import os from "os"
 import { randomBytes } from "crypto"
 import { createRequire } from "module"
+import { compile } from "./compile.js"
+import type { DslFile, ExcalidrawScene } from "./compile.js"
 
 const require = createRequire(import.meta.url)
 const { version: VERSION } = require("../package.json") as { version: string }
 const WORKSPACE_FILE = "workspace.json"
+const DSL_FILE = "workspace.oneshot.json"
 const ONESHOT_APP_URL = "https://oneshot-release.vercel.app"
 const CONFIG_PATH = path.join(os.homedir(), ".oneshot", "config.json")
 
@@ -54,6 +58,7 @@ function touchSession(id: string) {
   const session = sessions.find((s) => s.id === id)
   if (session) {
     session.lastUsedAt = new Date().toISOString()
+    fs.mkdirSync(path.dirname(SESSIONS_PATH), { recursive: true })
     fs.writeFileSync(SESSIONS_PATH, JSON.stringify(sessions, null, 2))
   }
 }
@@ -102,7 +107,7 @@ async function runInstall() {
 
   if (p.isCancel(agent)) { p.cancel("Cancelled."); process.exit(0) }
 
-  if (agent === "claude-code" || agent === "cursor" || agent === "antigravity") {
+  if (agent === "claude-code" || agent === "cursor" || agent === "antigravity" || agent === "windsurf") {
     const spinner = p.spinner()
     spinner.start("Installing skill…")
 
@@ -110,6 +115,7 @@ async function runInstall() {
       if (agent === "claude-code")  await setupClaudeCodeSkill()
       if (agent === "cursor")       await setupCursorSkill()
       if (agent === "antigravity")  await setupAntigravitySkill()
+      if (agent === "windsurf")     await setupWindsurfSkill()
       spinner.stop(pc.green("Skill installed"))
     } catch (err) {
       spinner.stop(pc.yellow(`Could not install skill: ${(err as Error).message}`))
@@ -167,7 +173,13 @@ async function runStart(resumeId?: string) {
     if (config.sync === "ably") {
       adapter = new AblySync(config.apiKey, channelName)
     } else if (config.sync === "supabase") {
-      adapter = new SupabaseSync(config.supabaseUrl, config.supabaseKey, roomId)
+      adapter = new SupabaseSync(
+        config.supabaseUrl,
+        config.supabaseKey,
+        roomId,
+        config.agentId ?? "ai",
+        config.agentLabel ?? "AI",
+      )
     } else {
       outputJSON({ error: "invalid_config", message: `Unknown sync type: ${config.sync}` })
       process.exit(1)
@@ -240,9 +252,48 @@ async function runStart(resumeId?: string) {
   outputJSON({ ready: true, roomUrl, roomId, resumed: isResuming, workspaceFile: workspacePath })
 
   // ── Sync daemon ────────────────────────────────────────────────────────────
-  const watcher = chokidar.watch(workspacePath, { ignoreInitial: true })
+  const dslPath = path.resolve(process.cwd(), DSL_FILE)
+  const watcher = chokidar.watch([workspacePath, dslPath], { ignoreInitial: true })
 
-  watcher.on("change", async () => {
+  // Prevent feedback loop: when onUpdate writes workspace.json the chokidar
+  // change event would fire and push the same data straight back to the remote.
+  // suppressNextWatch is set true before every remote-triggered write and
+  // cleared on the very next change event.
+  let suppressNextWatch = false
+
+  watcher.on("change", async (changedPath) => {
+    // ── DSL file changed: compile it into workspace.json ──────────────────
+    if (changedPath === dslPath) {
+      try {
+        const dslRaw = fs.readFileSync(dslPath, "utf-8")
+        const dsl = JSON.parse(dslRaw) as DslFile
+        if (!dsl.oneshot) return // not a DSL file, ignore
+
+        const existingRaw = fs.existsSync(workspacePath)
+          ? fs.readFileSync(workspacePath, "utf-8")
+          : JSON.stringify({ type: "excalidraw", version: 2, elements: [], appState: { viewBackgroundColor: "#0f172a" }, files: {} })
+        const existingScene = JSON.parse(existingRaw) as ExcalidrawScene
+
+        const agentColor = getAgentColor(config.agentId ?? "ai")
+        const { scene: compiled } = compile(dsl, existingScene, config.agentId ?? "ai", agentColor)
+
+        // Write compiled result back to workspace.json (triggers workspace watcher)
+        suppressNextWatch = false // let the workspace watcher pick this up and push
+        fs.writeFileSync(workspacePath, JSON.stringify(compiled, null, 2))
+
+        // Delete the DSL file — it has been consumed
+        fs.unlinkSync(dslPath)
+      } catch (err) {
+        process.stderr.write(`[oneshot] DSL compile error: ${(err as Error).message}\n`)
+      }
+      return
+    }
+
+    // ── workspace.json changed: push to remote ────────────────────────────
+    if (suppressNextWatch) {
+      suppressNextWatch = false
+      return
+    }
     try {
       const content = fs.readFileSync(workspacePath, "utf-8")
       await adapter!.push(JSON.parse(content))
@@ -252,6 +303,7 @@ async function runStart(resumeId?: string) {
   })
 
   adapter!.onUpdate((data) => {
+    suppressNextWatch = true
     fs.writeFileSync(workspacePath, JSON.stringify(data, null, 2))
   })
 
@@ -267,4 +319,27 @@ async function runStart(resumeId?: string) {
 
 function outputJSON(obj: Record<string, unknown>) {
   process.stdout.write(JSON.stringify(obj) + "\n")
+}
+
+/**
+ * Deterministic color per agentId. Known IDs get fixed colors; unknown IDs
+ * get a color derived from a simple hash of the string.
+ */
+export function getAgentColor(agentId: string): string {
+  const known: Record<string, string> = {
+    claude:    "#38bdf8",
+    cursor:    "#fb923c",
+    aider:     "#4ade80",
+    windsurf:  "#a78bfa",
+    antigravity: "#f472b6",
+    human:     "#f1f5f9",
+    ai:        "#38bdf8",
+  }
+  const lower = agentId.toLowerCase()
+  if (known[lower]) return known[lower]
+  // Hash-based fallback — pick from a set of accent colors
+  const palette = ["#38bdf8", "#fb923c", "#4ade80", "#a78bfa", "#f87171", "#fbbf24"]
+  let hash = 0
+  for (const ch of lower) hash = (hash * 31 + ch.charCodeAt(0)) & 0xffffffff
+  return palette[Math.abs(hash) % palette.length]
 }

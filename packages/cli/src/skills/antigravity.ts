@@ -73,6 +73,13 @@ If \`~/.oneshot/config.json\` is missing:
 4. **Connect new nodes to existing ones** via arrows — never leave orphan nodes
 5. **One question at a time**
 
+## Annotation Protocol
+
+Before every canvas update, scan all non-deleted elements where
+\`customData?.oneshot_type === "annotation"\` and \`customData?.addressed !== true\`.
+For each one: read the text, draw a response node near it connected by arrow,
+then set \`customData.addressed = true\` and \`backgroundColor = "#bbf7d0"\` on the annotation.
+
 ## Graph Awareness
 
 On every new user input:
@@ -94,7 +101,36 @@ strokeWidth: 2, roughness: 0, roundness: {type:3, value:8}
 
 rectangle = system/service | ellipse = actor/user | diamond = decision | frame = group
 
-## workspace.json format
+## DSL Format (Recommended)
+
+Instead of editing \`workspace.json\` directly, write \`workspace.oneshot.json\` with this simpler format.
+The CLI detects it, compiles it into \`workspace.json\`, and deletes it automatically.
+
+\`\`\`json
+{
+  "oneshot": true,
+  "version": 1,
+  "intent": "What this update does (optional)",
+  "add": [
+    { "id": "gateway", "shape": "rect",    "label": "API Gateway", "color": "default" },
+    { "id": "user",    "shape": "ellipse", "label": "User",        "color": "blue"    }
+  ],
+  "connect": [
+    { "from": "user", "to": "gateway", "label": "HTTP" }
+  ],
+  "update": [
+    { "id": "gateway", "label": "API Gateway v2", "color": "green" }
+  ],
+  "delete": ["old-element-id"]
+}
+\`\`\`
+
+Shapes: \`rect\` | \`ellipse\` | \`diamond\` | \`frame\`
+Colors: \`default\` | \`blue\` | \`green\` | \`orange\` | \`red\` | \`cyan\` | \`purple\`
+
+Direct \`workspace.json\` edits still work — DSL is the preferred interface.
+
+## Raw Format (Advanced)
 
 \`\`\`json
 {
