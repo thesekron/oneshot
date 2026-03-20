@@ -1,6 +1,6 @@
 {
   "name": "oneshot-app",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "description": "AI-powered whiteboard — sync your canvas with AI agents",
   "bin": {
     "oneshot-app": "./dist/index.js"
