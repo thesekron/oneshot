@@ -1,14 +1,7 @@
-import {
-  isElbowArrow,
-  isLinearElement,
-  isLineElement,
-} from "@oneshot/element";
+import { isElbowArrow, isLinearElement, isLineElement } from "@oneshot/element";
 import { arrayToMap, invariant } from "@oneshot/common";
 
-import {
-  toggleLinePolygonState,
-  CaptureUpdateAction,
-} from "@oneshot/element";
+import { toggleLinePolygonState, CaptureUpdateAction } from "@oneshot/element";
 
 import type {
   ExcalidrawLinearElement,

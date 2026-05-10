@@ -1,7 +1,4 @@
-import {
-  getBoundTextElement,
-  redrawTextBoundingBox,
-} from "@oneshot/element";
+import { getBoundTextElement, redrawTextBoundingBox } from "@oneshot/element";
 import { hasBoundTextElement, isTextElement } from "@oneshot/element";
 
 import type {

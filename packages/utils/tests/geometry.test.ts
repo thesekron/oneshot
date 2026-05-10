@@ -8,12 +8,7 @@ import {
   segmentsIntersectAt,
 } from "@oneshot/math";
 
-import type {
-  GlobalPoint,
-  LineSegment,
-  Polygon,
-  Radians,
-} from "@oneshot/math";
+import type { GlobalPoint, LineSegment, Polygon, Radians } from "@oneshot/math";
 
 import { pointInEllipse, pointOnEllipse, type Ellipse } from "../src/shape";
 

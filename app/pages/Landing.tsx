@@ -333,10 +333,7 @@ export default function Landing() {
       <footer style={styles.footer}>
         <span>oneshot — AI canvas sync</span>
         <div style={{ display: "flex", gap: "1rem" }}>
-          <a
-            href="/docs"
-            style={{ color: "#475569", textDecoration: "none" }}
-          >
+          <a href="/docs" style={{ color: "#475569", textDecoration: "none" }}>
             Docs
           </a>
           <a

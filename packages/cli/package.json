@@ -2,6 +2,9 @@
   "name": "oneshot-app",
   "version": "0.1.0",
   "description": "AI-powered whiteboard — sync your canvas with AI agents",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "oneshot-app": "./dist/index.js"
   },

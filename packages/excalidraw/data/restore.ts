@@ -28,10 +28,7 @@ import {
   projectFixedPointOntoDiagonal,
 } from "@oneshot/element";
 import { normalizeFixedPoint } from "@oneshot/element";
-import {
-  updateElbowArrowPoints,
-  validateElbowPoints,
-} from "@oneshot/element";
+import { updateElbowArrowPoints, validateElbowPoints } from "@oneshot/element";
 import { LinearElementEditor } from "@oneshot/element";
 import { bumpVersion } from "@oneshot/element";
 import { getContainerElement } from "@oneshot/element";

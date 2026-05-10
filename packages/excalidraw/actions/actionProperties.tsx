@@ -38,10 +38,7 @@ import { LinearElementEditor } from "@oneshot/element";
 import { newElementWith } from "@oneshot/element";
 import { getArrowheadForPicker } from "@oneshot/element";
 
-import {
-  getBoundTextElement,
-  redrawTextBoundingBox,
-} from "@oneshot/element";
+import { getBoundTextElement, redrawTextBoundingBox } from "@oneshot/element";
 
 import {
   isArrowElement,

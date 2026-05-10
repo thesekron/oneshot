@@ -13,17 +13,9 @@ import {
   vectorScale,
 } from "@oneshot/math";
 
-import {
-  ellipse,
-  ellipseSegmentInterceptPoints,
-} from "@oneshot/math/ellipse";
+import { ellipse, ellipseSegmentInterceptPoints } from "@oneshot/math/ellipse";
 
-import type {
-  Curve,
-  GlobalPoint,
-  LineSegment,
-  Radians,
-} from "@oneshot/math";
+import type { Curve, GlobalPoint, LineSegment, Radians } from "@oneshot/math";
 
 import type { FrameNameBounds } from "@oneshot/excalidraw/types";
 

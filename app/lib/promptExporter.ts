@@ -196,10 +196,9 @@ export function exportCanvasToPrompt(
     const childLines = children
       .map((n) => `  - **${n.label}** (${n.type})`)
       .join("\n");
-    return (
-      `#### Section: "${frame.name}"\n` +
-      (childLines || "  *(no components)*")
-    );
+    return `#### Section: "${frame.name}"\n${
+      childLines || "  *(no components)*"
+    }`;
   });
 
   // ── Connections ───────────────────────────────────────────────────────────

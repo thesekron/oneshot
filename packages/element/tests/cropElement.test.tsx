@@ -3,11 +3,7 @@ import { vi } from "vitest";
 
 import { KEYS, cloneJSON } from "@oneshot/common";
 
-import {
-  Excalidraw,
-  exportToCanvas,
-  exportToSvg,
-} from "@oneshot/excalidraw";
+import { Excalidraw, exportToCanvas, exportToSvg } from "@oneshot/excalidraw";
 import {
   actionFlipHorizontal,
   actionFlipVertical,

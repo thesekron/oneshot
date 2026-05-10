@@ -9,7 +9,11 @@ export class SupabaseSync implements SyncAdapter {
    * workspaceId is used as the primary key in the "workspaces" table and as
    * the Realtime filter, giving each room its own isolated row.
    */
-  constructor(private url: string, private key: string, private workspaceId: string) {}
+  constructor(
+    private url: string,
+    private key: string,
+    private workspaceId: string,
+  ) {}
 
   async connect() {
     const { createClient } = await import("@supabase/supabase-js");
@@ -23,7 +27,10 @@ export class SupabaseSync implements SyncAdapter {
       .maybeSingle();
 
     if (data?.elements?.length) {
-      this.updateCallback?.({ elements: data.elements, appState: data.app_state ?? {} });
+      this.updateCallback?.({
+        elements: data.elements,
+        appState: data.app_state ?? {},
+      });
     }
 
     // Subscribe via postgres_changes — same mechanism the web app uses.
@@ -40,9 +47,16 @@ export class SupabaseSync implements SyncAdapter {
         },
         (payload: any) => {
           const row = payload.new;
-          if (!row || row.updated_by !== "frontend") return;
-          if (!row.elements) return;
-          this.updateCallback?.({ elements: row.elements, appState: row.app_state ?? {} });
+          if (!row || row.updated_by !== "frontend") {
+            return;
+          }
+          if (!row.elements) {
+            return;
+          }
+          this.updateCallback?.({
+            elements: row.elements,
+            appState: row.app_state ?? {},
+          });
         },
       )
       .subscribe();
@@ -51,15 +65,13 @@ export class SupabaseSync implements SyncAdapter {
   // Upsert the workspaces table — web app listens via postgres_changes for
   // rows where updated_by === "watcher".
   async push(data: any) {
-    await (this.client as any)
-      .from("workspaces")
-      .upsert({
-        id: this.workspaceId,
-        elements: data.elements ?? [],
-        app_state: data.appState ?? {},
-        updated_by: "watcher",
-        updated_at: new Date().toISOString(),
-      });
+    await (this.client as any).from("workspaces").upsert({
+      id: this.workspaceId,
+      elements: data.elements ?? [],
+      app_state: data.appState ?? {},
+      updated_by: "watcher",
+      updated_at: new Date().toISOString(),
+    });
   }
 
   onUpdate(callback: (data: unknown) => void) {

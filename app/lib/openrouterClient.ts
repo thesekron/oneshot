@@ -71,11 +71,11 @@ export async function generatePromptWithOpenRouter(
           {
             type: "text",
             text:
-              `The following JSON is the parsed element structure of the canvas — use it as supplementary context alongside the image:\n\n` +
-              "```json\n" +
-              elementStructure +
-              "\n```\n\n" +
-              "Generate the comprehensive implementation prompt now.",
+              `${
+                `The following JSON is the parsed element structure of the canvas — use it as supplementary context alongside the image:\n\n` +
+                "```json\n"
+              }${elementStructure}\n\`\`\`\n\n` +
+              `Generate the comprehensive implementation prompt now.`,
           },
         ],
       },
@@ -98,9 +98,7 @@ export async function generatePromptWithOpenRouter(
     try {
       const errJson = await response.json();
       detail =
-        errJson?.error?.message ??
-        errJson?.message ??
-        (await response.text());
+        errJson?.error?.message ?? errJson?.message ?? (await response.text());
     } catch {
       detail = response.statusText;
     }
@@ -108,8 +106,7 @@ export async function generatePromptWithOpenRouter(
   }
 
   const data = await response.json();
-  const text: string | undefined =
-    data?.choices?.[0]?.message?.content;
+  const text: string | undefined = data?.choices?.[0]?.message?.content;
 
   if (!text) {
     throw new Error("OpenRouter returned an empty response.");

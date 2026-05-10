@@ -11,11 +11,7 @@
  */
 
 import { clearAppStateForLocalStorage } from "@oneshot/excalidraw/appState";
-import {
-  CANVAS_SEARCH_TAB,
-  DEFAULT_SIDEBAR,
-  debounce,
-} from "@oneshot/common";
+import { CANVAS_SEARCH_TAB, DEFAULT_SIDEBAR, debounce } from "@oneshot/common";
 import {
   createStore,
   entries,
@@ -26,7 +22,6 @@ import {
   get,
 } from "idb-keyval";
 
-import { appJotaiStore, atom } from "../app-jotai";
 import { getNonDeletedElements } from "@oneshot/element";
 
 import type { LibraryPersistedData } from "@oneshot/excalidraw/data/library";
@@ -38,6 +33,8 @@ import type {
   BinaryFiles,
 } from "@oneshot/excalidraw/types";
 import type { MaybePromise } from "@oneshot/common/utility-types";
+
+import { appJotaiStore, atom } from "../app-jotai";
 
 import { SAVE_TO_LOCAL_STORAGE_TIMEOUT, STORAGE_KEYS } from "../app_constants";
 

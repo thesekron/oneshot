@@ -1,8 +1,4 @@
-import {
-  applyDarkModeFilter,
-  COLOR_PALETTE,
-  rgbToHex,
-} from "@oneshot/common";
+import { applyDarkModeFilter, COLOR_PALETTE, rgbToHex } from "@oneshot/common";
 
 describe("COLOR_PALETTE", () => {
   it("color palette doesn't regress", () => {

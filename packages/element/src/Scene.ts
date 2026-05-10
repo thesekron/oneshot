@@ -34,11 +34,7 @@ import type {
   Ordered,
 } from "@oneshot/element/types";
 
-import type {
-  Assert,
-  Mutable,
-  SameType,
-} from "@oneshot/common/utility-types";
+import type { Assert, Mutable, SameType } from "@oneshot/common/utility-types";
 
 import type { AppState } from "../../excalidraw/types";
 

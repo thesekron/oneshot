@@ -49,10 +49,7 @@ interface LogoProps {
   isNotLink?: boolean;
 }
 
-export const ExcalidrawLogo = ({
-  style,
-  size = "small",
-}: LogoProps) => {
+export const ExcalidrawLogo = ({ style, size = "small" }: LogoProps) => {
   return (
     <div className={`ExcalidrawLogo is-${size}`} style={style}>
       <LogoIcon />

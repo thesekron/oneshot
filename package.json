@@ -63,7 +63,6 @@
     "build:canvas": "yarn --cwd ./packages/excalidraw build:esm",
     "build:math": "yarn --cwd ./packages/math build:esm",
     "build:packages": "yarn build:common && yarn build:math && yarn build:element && yarn build:canvas",
-    "build:version": "yarn --cwd ./app build:version",
     "build": "yarn --cwd ./app build",
     "build:preview": "yarn --cwd ./app build:preview",
     "start": "yarn --cwd ./app start",

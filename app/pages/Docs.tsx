@@ -249,9 +249,7 @@ export default function Docs() {
           <h2 id="quickstart" style={styles.h2}>
             Quick start
           </h2>
-          <p style={styles.p}>
-            In your project directory, start a session:
-          </p>
+          <p style={styles.p}>In your project directory, start a session:</p>
           <pre style={styles.pre}>{"npx oneshot-app start"}</pre>
           <p style={styles.p}>
             This prints a URL like{" "}
@@ -264,8 +262,8 @@ export default function Docs() {
             >
               https://oneshot-release.vercel.app/r/abc123#...
             </code>
-            . Open it in your browser. Then ask your AI agent to draw
-            something — the canvas updates in real-time.
+            . Open it in your browser. Then ask your AI agent to draw something
+            — the canvas updates in real-time.
           </p>
           <div style={styles.note}>
             The URL hash contains your credentials and is never sent to any
@@ -277,9 +275,7 @@ export default function Docs() {
           <h2 id="how-it-works" style={styles.h2}>
             How it works
           </h2>
-          <p style={styles.p}>
-            oneshot has three parts:
-          </p>
+          <p style={styles.p}>oneshot has three parts:</p>
           <ol
             style={{
               color: "#94a3b8",
@@ -322,9 +318,7 @@ export default function Docs() {
           <h2 id="cli-start" style={styles.h2}>
             oneshot start
           </h2>
-          <p style={styles.p}>
-            Starts the sync daemon and prints a room URL.
-          </p>
+          <p style={styles.p}>Starts the sync daemon and prints a room URL.</p>
           <pre style={styles.pre}>
             {`npx oneshot-app start
 npx oneshot-app start --resume <roomId>   # reuse an existing session`}

@@ -1,5 +1,8 @@
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+
+import { Server } from "socket.io";
+
+import type { Socket } from "socket.io";
 
 const port = process.env.PORT || 3002;
 
@@ -50,7 +53,9 @@ function joinRoom(socket: Socket, roomId: string) {
 
 function leaveRoom(socket: Socket) {
   const roomId = socketRoom.get(socket.id);
-  if (!roomId) return;
+  if (!roomId) {
+    return;
+  }
 
   const room = rooms.get(roomId);
   if (room) {
@@ -81,7 +86,9 @@ io.on("connection", (socket: Socket) => {
   socket.emit("init-room");
 
   socket.on("join-room", (roomId: string) => {
-    if (!roomId || typeof roomId !== "string") return;
+    if (!roomId || typeof roomId !== "string") {
+      return;
+    }
     leaveRoom(socket); // leave any previous room first
     joinRoom(socket, roomId);
   });
@@ -90,7 +97,9 @@ io.on("connection", (socket: Socket) => {
   socket.on(
     "server-broadcast",
     (roomId: string, encryptedData: ArrayBuffer, iv: Uint8Array) => {
-      if (socketRoom.get(socket.id) !== roomId) return;
+      if (socketRoom.get(socket.id) !== roomId) {
+        return;
+      }
       socket.to(roomId).emit("client-broadcast", encryptedData, iv);
     },
   );
@@ -99,7 +108,9 @@ io.on("connection", (socket: Socket) => {
   socket.on(
     "server-volatile-broadcast",
     (roomId: string, encryptedData: ArrayBuffer, iv: Uint8Array) => {
-      if (socketRoom.get(socket.id) !== roomId) return;
+      if (socketRoom.get(socket.id) !== roomId) {
+        return;
+      }
       socket.volatile.to(roomId).emit("client-broadcast", encryptedData, iv);
     },
   );
@@ -112,7 +123,9 @@ io.on("connection", (socket: Socket) => {
       action: "FOLLOW" | "UNFOLLOW";
     }) => {
       const targetId = payload?.userToFollow?.socketId;
-      if (!targetId) return;
+      if (!targetId) {
+        return;
+      }
 
       if (!followedBy.has(targetId)) {
         followedBy.set(targetId, new Set());

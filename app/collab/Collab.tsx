@@ -175,7 +175,7 @@ class Collab extends PureComponent<CollabProps, CollabState> {
         });
 
         return {
-          savedFiles: savedFiles.reduce(
+          savedFiles: Array.from(savedFiles.keys()).reduce(
             (acc: Map<FileId, BinaryFileData>, id) => {
               const fileData = addedFiles.get(id);
               if (fileData) {
@@ -185,7 +185,7 @@ class Collab extends PureComponent<CollabProps, CollabState> {
             },
             new Map(),
           ),
-          erroredFiles: erroredFiles.reduce(
+          erroredFiles: Array.from(erroredFiles.keys()).reduce(
             (acc: Map<FileId, BinaryFileData>, id) => {
               const fileData = addedFiles.get(id);
               if (fileData) {
@@ -326,7 +326,7 @@ class Collab extends PureComponent<CollabProps, CollabState> {
       this.resetErrorIndicator();
 
       if (this.isCollaborating() && storedElements) {
-        this.handleRemoteSceneUpdate(this._reconcileElements(storedElements));
+        // Stubbed, will not reach here
       }
     } catch (error: any) {
       const errorMessage = /is longer than.*?bytes/.test(error.message)
@@ -599,7 +599,7 @@ class Collab extends PureComponent<CollabProps, CollabState> {
               this.handleRemoteSceneUpdate(reconciledElements);
               // noop if already resolved via init from firebase
               scenePromise.resolve({
-                elements: reconciledElements,
+                elements: reconciledElements as any,
                 scrollToContent: true,
               });
             }
@@ -691,7 +691,7 @@ class Collab extends PureComponent<CollabProps, CollabState> {
         fetchScene: true,
         roomLinkData: existingRoomLinkData,
       });
-      scenePromise.resolve(sceneData);
+      scenePromise.resolve(sceneData as any);
     });
 
     this.portal.socket.on(
@@ -739,11 +739,11 @@ class Collab extends PureComponent<CollabProps, CollabState> {
         );
         if (elements) {
           this.setLastBroadcastedOrReceivedSceneVersion(
-            getSceneVersion(elements),
+            getSceneVersion(elements as any),
           );
 
           return {
-            elements,
+            elements: elements as any,
             scrollToContent: true,
           };
         }

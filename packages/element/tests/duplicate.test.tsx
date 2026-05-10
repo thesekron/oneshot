@@ -1,11 +1,6 @@
 import { pointFrom } from "@oneshot/math";
 
-import {
-  FONT_FAMILY,
-  ORIG_ID,
-  ROUNDNESS,
-  isPrimitive,
-} from "@oneshot/common";
+import { FONT_FAMILY, ORIG_ID, ROUNDNESS, isPrimitive } from "@oneshot/common";
 
 import { Excalidraw, mutateElement } from "@oneshot/excalidraw";
 

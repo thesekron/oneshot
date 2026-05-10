@@ -1,9 +1,4 @@
-import {
-  invariant,
-  isDevEnv,
-  isTestEnv,
-  type Bounds,
-} from "@oneshot/common";
+import { invariant, isDevEnv, isTestEnv, type Bounds } from "@oneshot/common";
 
 import {
   pointFrom,
@@ -17,12 +12,7 @@ import {
   vectorScale,
 } from "@oneshot/math";
 
-import type {
-  LocalPoint,
-  GlobalPoint,
-  Triangle,
-  Vector,
-} from "@oneshot/math";
+import type { LocalPoint, GlobalPoint, Triangle, Vector } from "@oneshot/math";
 
 import { getCenterForBounds } from "./bounds";
 

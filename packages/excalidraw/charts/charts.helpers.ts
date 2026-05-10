@@ -22,10 +22,7 @@ import {
   wrapText,
 } from "@oneshot/element";
 
-import type {
-  ChartType,
-  ExcalidrawTextElement,
-} from "@oneshot/element/types";
+import type { ChartType, ExcalidrawTextElement } from "@oneshot/element/types";
 import type { NonDeletedExcalidrawElement } from "@oneshot/element/types";
 
 import {

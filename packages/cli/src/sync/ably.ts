@@ -30,7 +30,9 @@ export class AblySync implements SyncAdapter {
     // Ignore our own echoed publishes (source === "watcher").
     (this.channel as any).subscribe("canvas-update", (msg: any) => {
       const data = msg.data as { source?: string; payload?: unknown } | null;
-      if (!data || data.source !== "frontend") return;
+      if (!data || data.source !== "frontend") {
+        return;
+      }
       if (this.updateCallback && data.payload) {
         this.updateCallback(data.payload);
       }

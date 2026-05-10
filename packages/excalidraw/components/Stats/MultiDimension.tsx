@@ -8,10 +8,7 @@ import {
   replaceAllElementsInFrame,
   updateBoundElements,
 } from "@oneshot/element";
-import {
-  rescalePointsInElement,
-  resizeSingleElement,
-} from "@oneshot/element";
+import { rescalePointsInElement, resizeSingleElement } from "@oneshot/element";
 import { getBoundTextElement, handleBindTextResize } from "@oneshot/element";
 
 import { isTextElement } from "@oneshot/element";

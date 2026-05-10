@@ -5,10 +5,7 @@ import {
   type Radians,
 } from "@oneshot/math";
 
-import {
-  SIDE_RESIZING_THRESHOLD,
-  type EditorInterface,
-} from "@oneshot/common";
+import { SIDE_RESIZING_THRESHOLD, type EditorInterface } from "@oneshot/common";
 
 import type { GlobalPoint, LineSegment, LocalPoint } from "@oneshot/math";
 

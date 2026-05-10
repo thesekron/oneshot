@@ -14,9 +14,7 @@ import "./TTDDialog.scss";
 
 import { TTDWelcomeMessage } from "./TTDWelcomeMessage";
 
-import type {
-  MermaidToExcalidrawLibProps,
-} from "./types";
+import type { MermaidToExcalidrawLibProps } from "./types";
 
 export const TTDDialog = (
   props: Record<string, unknown> | { __fallback: true },

@@ -17,9 +17,7 @@ export const AppWelcomeScreen: React.FC<{
       <WelcomeScreen.Hints.HelpHint />
       <WelcomeScreen.Center>
         <WelcomeScreen.Center.Logo />
-        <WelcomeScreen.Center.Heading>
-          OneShot
-        </WelcomeScreen.Center.Heading>
+        <WelcomeScreen.Center.Heading>OneShot</WelcomeScreen.Center.Heading>
         <WelcomeScreen.Center.Menu>
           <WelcomeScreen.Center.MenuItemLoadScene />
           <WelcomeScreen.Center.MenuItemHelp />

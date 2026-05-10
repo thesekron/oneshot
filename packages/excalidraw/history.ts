@@ -1,10 +1,6 @@
 import { Emitter } from "@oneshot/common";
 
-import {
-  CaptureUpdateAction,
-  StoreChange,
-  StoreDelta,
-} from "@oneshot/element";
+import { CaptureUpdateAction, StoreChange, StoreDelta } from "@oneshot/element";
 
 import type { StoreSnapshot, Store } from "@oneshot/element";
 

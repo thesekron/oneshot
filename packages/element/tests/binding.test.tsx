@@ -8,11 +8,7 @@ import { Excalidraw, isLinearElement } from "@oneshot/excalidraw";
 
 import { API } from "@oneshot/excalidraw/tests/helpers/api";
 import { UI, Pointer, Keyboard } from "@oneshot/excalidraw/tests/helpers/ui";
-import {
-  act,
-  fireEvent,
-  render,
-} from "@oneshot/excalidraw/tests/test-utils";
+import { act, fireEvent, render } from "@oneshot/excalidraw/tests/test-utils";
 
 import { defaultLang, setLanguage } from "@oneshot/excalidraw/i18n";
 

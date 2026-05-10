@@ -15,8 +15,10 @@ import {
   useExcalidrawAPI,
 } from "@oneshot/excalidraw";
 import { getNonDeletedElements } from "@oneshot/element";
-import { useAtomValue } from "../app-jotai";
+
 import { useState, useCallback, useRef } from "react";
+
+import { useAtomValue } from "../app-jotai";
 
 import { parseCanvas } from "../lib/promptExporter";
 import { generatePromptWithOpenRouter } from "../lib/openrouterClient";
@@ -179,7 +181,9 @@ export const OneShotPanel = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [exportingFormat, setExportingFormat] = useState<ExportFormat | null>(null);
+  const [exportingFormat, setExportingFormat] = useState<ExportFormat | null>(
+    null,
+  );
 
   // ── Settings management ──────────────────────────────────────────────────
 
@@ -203,7 +207,9 @@ export const OneShotPanel = () => {
   // ── AI Prompt Generation ─────────────────────────────────────────────────
 
   const handleGeneratePrompt = useCallback(async () => {
-    if (!excalidrawAPI) return;
+    if (!excalidrawAPI) {
+      return;
+    }
 
     if (!apiKey) {
       setShowSettings(true);
@@ -250,7 +256,9 @@ export const OneShotPanel = () => {
   // ── Copy to Clipboard ───────────────────────────────────────────────────
 
   const handleCopy = useCallback(async () => {
-    if (!prompt) return;
+    if (!prompt) {
+      return;
+    }
     await navigator.clipboard.writeText(prompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -260,7 +268,9 @@ export const OneShotPanel = () => {
 
   const handleExport = useCallback(
     async (format: ExportFormat) => {
-      if (!excalidrawAPI) return;
+      if (!excalidrawAPI) {
+        return;
+      }
       setExportingFormat(format);
       try {
         const elements = excalidrawAPI.getSceneElements();
@@ -330,7 +340,9 @@ export const OneShotPanel = () => {
             });
             const svgStr = new XMLSerializer().serializeToString(svgEl);
             const printWindow = window.open("", "_blank");
-            if (!printWindow) break;
+            if (!printWindow) {
+              break;
+            }
             const svgWidth = svgEl.getAttribute("width") || "100%";
             const svgHeight = svgEl.getAttribute("height") || "100%";
             printWindow.document.write(`<!DOCTYPE html>
@@ -394,7 +406,11 @@ ${svgStr}
           <button
             type="button"
             onClick={handleSettingsToggle}
-            title={hasKey ? "OpenRouter key set — click to change" : "Set OpenRouter API key"}
+            title={
+              hasKey
+                ? "OpenRouter key set — click to change"
+                : "Set OpenRouter API key"
+            }
             style={{
               display: "flex",
               alignItems: "center",
@@ -450,7 +466,13 @@ ${svgStr}
         >
           {/* API Key */}
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <label style={{ fontSize: "11px", fontWeight: 600, color: "var(--color-on-surface-low)" }}>
+            <label
+              style={{
+                fontSize: "11px",
+                fontWeight: 600,
+                color: "var(--color-on-surface-low)",
+              }}
+            >
               OpenRouter API Key
             </label>
             <input
@@ -460,7 +482,9 @@ ${svgStr}
               defaultValue={apiKey}
               id="or-key-input"
               onKeyDown={(e) => {
-                if (e.key === "Escape") setShowSettings(false);
+                if (e.key === "Escape") {
+                  setShowSettings(false);
+                }
               }}
               style={inputStyle}
             />
@@ -468,7 +492,13 @@ ${svgStr}
 
           {/* Model */}
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <label style={{ fontSize: "11px", fontWeight: 600, color: "var(--color-on-surface-low)" }}>
+            <label
+              style={{
+                fontSize: "11px",
+                fontWeight: 600,
+                color: "var(--color-on-surface-low)",
+              }}
+            >
               Model
             </label>
             <input
@@ -477,11 +507,19 @@ ${svgStr}
               defaultValue={model}
               id="or-model-input"
               onKeyDown={(e) => {
-                if (e.key === "Escape") setShowSettings(false);
+                if (e.key === "Escape") {
+                  setShowSettings(false);
+                }
               }}
               style={inputStyle}
             />
-            <span style={{ fontSize: "10px", color: "var(--color-on-surface-low)", lineHeight: 1.4 }}>
+            <span
+              style={{
+                fontSize: "10px",
+                color: "var(--color-on-surface-low)",
+                lineHeight: 1.4,
+              }}
+            >
               Paste any vision model ID from{" "}
               <a
                 href="https://openrouter.ai/models?modality=image%2Btext"
@@ -492,11 +530,25 @@ ${svgStr}
                 openrouter.ai/models
               </a>
               . Good free options:{" "}
-              <code style={{ fontSize: "10px", background: "var(--color-surface-mid)", padding: "1px 3px", borderRadius: "3px" }}>
+              <code
+                style={{
+                  fontSize: "10px",
+                  background: "var(--color-surface-mid)",
+                  padding: "1px 3px",
+                  borderRadius: "3px",
+                }}
+              >
                 google/gemini-2.0-flash-001
               </code>
               {" · "}
-              <code style={{ fontSize: "10px", background: "var(--color-surface-mid)", padding: "1px 3px", borderRadius: "3px" }}>
+              <code
+                style={{
+                  fontSize: "10px",
+                  background: "var(--color-surface-mid)",
+                  padding: "1px 3px",
+                  borderRadius: "3px",
+                }}
+              >
                 meta-llama/llama-3.2-90b-vision-instruct
               </code>
             </span>
@@ -505,8 +557,12 @@ ${svgStr}
           <button
             type="button"
             onClick={() => {
-              const keyEl = document.getElementById("or-key-input") as HTMLInputElement;
-              const modelEl = document.getElementById("or-model-input") as HTMLInputElement;
+              const keyEl = document.getElementById(
+                "or-key-input",
+              ) as HTMLInputElement;
+              const modelEl = document.getElementById(
+                "or-model-input",
+              ) as HTMLInputElement;
               handleSaveSettings(keyEl.value, modelEl.value);
             }}
             style={{
@@ -524,7 +580,9 @@ ${svgStr}
             Save
           </button>
 
-          <span style={{ fontSize: "10px", color: "var(--color-on-surface-low)" }}>
+          <span
+            style={{ fontSize: "10px", color: "var(--color-on-surface-low)" }}
+          >
             Get a free key at{" "}
             <a
               href="https://openrouter.ai/keys"
@@ -539,7 +597,12 @@ ${svgStr}
         </div>
       )}
 
-      <hr style={{ border: "none", borderTop: "1px solid var(--color-surface-mid)" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid var(--color-surface-mid)",
+        }}
+      />
 
       {/* ── Primary Action: AI Generate ─────────────────────────────────── */}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -662,7 +725,12 @@ ${svgStr}
         )}
       </div>
 
-      <hr style={{ border: "none", borderTop: "1px solid var(--color-surface-mid)" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid var(--color-surface-mid)",
+        }}
+      />
 
       {/* ── Export section ──────────────────────────────────────────────── */}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -703,12 +771,21 @@ ${svgStr}
                     : 1,
               }}
             >
-              <span style={{ fontSize: "16px", flexShrink: 0 }}>{fmt.emoji}</span>
-              <span style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+              <span style={{ fontSize: "16px", flexShrink: 0 }}>
+                {fmt.emoji}
+              </span>
+              <span
+                style={{ display: "flex", flexDirection: "column", gap: "1px" }}
+              >
                 <span style={{ fontWeight: 600, fontSize: "12px" }}>
                   {exportingFormat === fmt.id ? "Exporting…" : fmt.label}
                 </span>
-                <span style={{ fontSize: "10px", color: "var(--color-on-surface-low)" }}>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    color: "var(--color-on-surface-low)",
+                  }}
+                >
                   {fmt.description}
                 </span>
               </span>
@@ -717,7 +794,12 @@ ${svgStr}
         </div>
       </div>
 
-      <hr style={{ border: "none", borderTop: "1px solid var(--color-surface-mid)" }} />
+      <hr
+        style={{
+          border: "none",
+          borderTop: "1px solid var(--color-surface-mid)",
+        }}
+      />
 
       {/* ── How it works ────────────────────────────────────────────────── */}
       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -730,7 +812,8 @@ ${svgStr}
           }}
         >
           <p>
-            An AI agent (Claude Code, Aider, etc.) can read and write the canvas by editing{" "}
+            An AI agent (Claude Code, Aider, etc.) can read and write the canvas
+            by editing{" "}
             <code
               style={{
                 background: "var(--color-surface-mid)",
