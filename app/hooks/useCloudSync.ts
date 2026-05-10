@@ -294,6 +294,7 @@ export function useCloudSync(): SaveFn {
   }, [!!excalidrawAPI]);
 
   // ── Stable save function (returned to caller) ──────────────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(
     debounce(
       async (
