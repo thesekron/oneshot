@@ -9,7 +9,7 @@ name: Publish CLI to npm
 
 on:
   release:
-    types: [published]   # triggers when you publish a Release on GitHub
+    types: [published] # triggers when you publish a Release on GitHub
 
 jobs:
   publish:
