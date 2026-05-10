@@ -1,9 +1,9 @@
 import { DEFAULT_LASER_COLOR, easeOut } from "@oneshot/common";
 
-import type { LaserPointerOptions } from "@excalidraw/laser-pointer";
-
 import { AnimatedTrail } from "./animated-trail";
 import { getClientColor } from "./clients";
+
+import type { LaserPointerOptions } from "@excalidraw/laser-pointer";
 
 import type { Trail } from "./animated-trail";
 import type { AnimationFrameHandler } from "./animation-frame-handler";
@@ -89,8 +89,7 @@ export class LaserTrails implements Trail {
         trail = new AnimatedTrail(this.animationFrameHandler, this.app, {
           ...this.getTrailOptions(),
           fill: () => {
-            const currentCollaborator =
-              this.app.state.collaborators.get(key);
+            const currentCollaborator = this.app.state.collaborators.get(key);
             return (
               currentCollaborator?.pointer?.laserColor ||
               getClientColor(key, currentCollaborator)

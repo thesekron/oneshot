@@ -1,14 +1,8 @@
-import {
-  convertToExcalidrawElements,
-  Excalidraw,
-} from "@oneshot/excalidraw";
+import { convertToExcalidrawElements, Excalidraw } from "@oneshot/excalidraw";
 
 import { API } from "@oneshot/excalidraw/tests/helpers/api";
 import { Keyboard, Pointer } from "@oneshot/excalidraw/tests/helpers/ui";
-import {
-  getCloneByOrigId,
-  render,
-} from "@oneshot/excalidraw/tests/test-utils";
+import { getCloneByOrigId, render } from "@oneshot/excalidraw/tests/test-utils";
 
 import type { ExcalidrawElement } from "../src/types";
 

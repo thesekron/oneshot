@@ -1,8 +1,4 @@
-import {
-  DEFAULT_EXPORT_PADDING,
-  EDITOR_LS_KEYS,
-  THEME,
-} from "@oneshot/common";
+import { DEFAULT_EXPORT_PADDING, EDITOR_LS_KEYS, THEME } from "@oneshot/common";
 
 import { convertToExcalidrawElements } from "@oneshot/element";
 

@@ -1,8 +1,4 @@
-import {
-  type GlobalPoint,
-  type LineSegment,
-  pointFrom,
-} from "@oneshot/math";
+import { type GlobalPoint, type LineSegment, pointFrom } from "@oneshot/math";
 
 import { getElementLineSegments } from "@oneshot/element";
 import { LinearElementEditor } from "@oneshot/element";

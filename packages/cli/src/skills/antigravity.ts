@@ -1,7 +1,8 @@
-import fs from "fs"
-import path from "path"
-import os from "os"
-import pc from "picocolors"
+import fs from "fs";
+import path from "path";
+import os from "os";
+
+import pc from "picocolors";
 
 const SKILL_CONTENT = `# OneShot – Visual Thinking Partner
 
@@ -110,39 +111,56 @@ fillStyle, strokeWidth, roughness, opacity, version, versionNonce, isDeleted, gr
 
 Text inside shape: set \`containerId\` to parent id.
 Arrow: \`startBinding\`/\`endBinding\` with elementId + add arrow id to both endpoints' \`boundElements\`.
-`
+`;
 
 export async function setupAntigravitySkill() {
   // Antigravity reads workspace skills from .agent/skills/
-  const workspaceSkillsDir = path.join(process.cwd(), ".agent", "skills", "oneshot")
+  const workspaceSkillsDir = path.join(
+    process.cwd(),
+    ".agent",
+    "skills",
+    "oneshot",
+  );
   // Also install globally at ~/.gemini/antigravity/skills/
-  const globalSkillsDir = path.join(os.homedir(), ".gemini", "antigravity", "skills", "oneshot")
+  const globalSkillsDir = path.join(
+    os.homedir(),
+    ".gemini",
+    "antigravity",
+    "skills",
+    "oneshot",
+  );
 
-  const errors: string[] = []
+  const errors: string[] = [];
 
   // Install workspace skill
   try {
-    fs.mkdirSync(workspaceSkillsDir, { recursive: true })
-    const skillPath = path.join(workspaceSkillsDir, "SKILL.md")
-    fs.writeFileSync(skillPath, SKILL_CONTENT)
-    console.log(pc.green(`  ✔ OneShot skill installed for Antigravity (workspace)`))
-    console.log(pc.dim(`    Location: ${skillPath}`))
+    fs.mkdirSync(workspaceSkillsDir, { recursive: true });
+    const skillPath = path.join(workspaceSkillsDir, "SKILL.md");
+    fs.writeFileSync(skillPath, SKILL_CONTENT);
+    console.log(
+      pc.green(`  ✔ OneShot skill installed for Antigravity (workspace)`),
+    );
+    console.log(pc.dim(`    Location: ${skillPath}`));
   } catch (err) {
-    errors.push(`workspace: ${(err as Error).message}`)
+    errors.push(`workspace: ${(err as Error).message}`);
   }
 
   // Install global skill
   try {
-    fs.mkdirSync(globalSkillsDir, { recursive: true })
-    const skillPath = path.join(globalSkillsDir, "SKILL.md")
-    fs.writeFileSync(skillPath, SKILL_CONTENT)
-    console.log(pc.green(`  ✔ OneShot skill installed for Antigravity (global)`))
-    console.log(pc.dim(`    Location: ${skillPath}`))
+    fs.mkdirSync(globalSkillsDir, { recursive: true });
+    const skillPath = path.join(globalSkillsDir, "SKILL.md");
+    fs.writeFileSync(skillPath, SKILL_CONTENT);
+    console.log(
+      pc.green(`  ✔ OneShot skill installed for Antigravity (global)`),
+    );
+    console.log(pc.dim(`    Location: ${skillPath}`));
   } catch (err) {
-    errors.push(`global: ${(err as Error).message}`)
+    errors.push(`global: ${(err as Error).message}`);
   }
 
   if (errors.length === 2) {
-    throw new Error(`Could not install Antigravity skill: ${errors.join("; ")}`)
+    throw new Error(
+      `Could not install Antigravity skill: ${errors.join("; ")}`,
+    );
   }
 }

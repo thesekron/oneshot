@@ -1,10 +1,6 @@
 import { exportToCanvas, exportToSvg } from "@oneshot/utils";
 
-import {
-  applyDarkModeFilter,
-  FONT_FAMILY,
-  FRAME_STYLE,
-} from "@oneshot/common";
+import { applyDarkModeFilter, FONT_FAMILY, FRAME_STYLE } from "@oneshot/common";
 
 import type {
   ExcalidrawTextElement,

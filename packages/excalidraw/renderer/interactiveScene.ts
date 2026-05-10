@@ -58,10 +58,7 @@ import {
   isFocusPointVisible,
 } from "@oneshot/element";
 
-import type {
-  TransformHandles,
-  TransformHandleType,
-} from "@oneshot/element";
+import type { TransformHandles, TransformHandleType } from "@oneshot/element";
 
 import type {
   ElementsMap,

@@ -329,11 +329,7 @@ export {
   throttleRAF,
 } from "@oneshot/common";
 
-export {
-  mutateElement,
-  newElementWith,
-  bumpVersion,
-} from "@oneshot/element";
+export { mutateElement, newElementWith, bumpVersion } from "@oneshot/element";
 
 export { CaptureUpdateAction } from "@oneshot/element";
 

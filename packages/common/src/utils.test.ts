@@ -1,8 +1,4 @@
-import {
-  isTransparent,
-  mapFind,
-  reduceToCommonValue,
-} from "@oneshot/common";
+import { isTransparent, mapFind, reduceToCommonValue } from "@oneshot/common";
 import { vi } from "vitest";
 
 // Import directly to avoid the @oneshot/common throttleRAF mock from setupTests.ts.

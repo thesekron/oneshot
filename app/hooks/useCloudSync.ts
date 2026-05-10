@@ -35,6 +35,7 @@ import {
   restoreElements,
 } from "@oneshot/excalidraw/data/restore";
 import { debounce } from "@oneshot/common";
+
 import type { AppState, BinaryFiles } from "@oneshot/excalidraw/types";
 import type { OrderedExcalidrawElement } from "@oneshot/element/types";
 import type { RemoteExcalidrawElement } from "@oneshot/excalidraw/data/reconcile";
@@ -123,21 +124,23 @@ function applyRemoteElements(
   remote: RemoteExcalidrawElement[],
   lastExternal: React.MutableRefObject<number>,
 ): void {
-  if (!remote.length) return;
+  if (!remote.length) {
+    return;
+  }
 
   const appState = api.getAppState();
   const local =
     api.getSceneElementsIncludingDeleted() as OrderedExcalidrawElement[];
 
-  const restored = restoreElements(
-    remote,
-    local,
-  ) as RemoteExcalidrawElement[];
+  const restored = restoreElements(remote, local) as RemoteExcalidrawElement[];
   const reconciled = reconcileElements(local, restored, appState);
   const bumped = bumpElementVersions(reconciled, local);
 
   lastExternal.current = Date.now();
-  api.updateScene({ elements: bumped, captureUpdate: CaptureUpdateAction.NEVER });
+  api.updateScene({
+    elements: bumped,
+    captureUpdate: CaptureUpdateAction.NEVER,
+  });
   appJotaiStore.set(oneShotSyncStatusAtom, "idle");
 }
 
@@ -160,7 +163,9 @@ export function useCloudSync(): SaveFn {
 
   // ── Relay mode (Ably) ──────────────────────────────────────────────────
   useEffect(() => {
-    if (SYNC_MODE !== "relay" || !ABLY_KEY || !excalidrawAPI) return;
+    if (SYNC_MODE !== "relay" || !ABLY_KEY || !excalidrawAPI) {
+      return;
+    }
 
     let ablyClient: import("ably").Realtime | null = null;
 
@@ -187,10 +192,16 @@ export function useCloudSync(): SaveFn {
         const payload = (
           msg.data as { payload?: { elements?: RemoteExcalidrawElement[] } }
         )?.payload;
-        if (!payload?.elements) return;
+        if (!payload?.elements) {
+          return;
+        }
 
         appJotaiStore.set(oneShotSyncStatusAtom, "loading");
-        applyRemoteElements(excalidrawAPI, payload.elements, lastExternalUpdateTime);
+        applyRemoteElements(
+          excalidrawAPI,
+          payload.elements,
+          lastExternalUpdateTime,
+        );
       });
 
       ablyClient.connection.on("connected", () => {
@@ -257,8 +268,12 @@ export function useCloudSync(): SaveFn {
           },
           (payload: { new: Record<string, unknown> }) => {
             const row = payload.new;
-            if (!row || (row.updated_by as string) !== "watcher") return;
-            if (!row.elements) return;
+            if (!row || (row.updated_by as string) !== "watcher") {
+              return;
+            }
+            if (!row.elements) {
+              return;
+            }
 
             appJotaiStore.set(oneShotSyncStatusAtom, "loading");
             applyRemoteElements(
@@ -279,11 +294,17 @@ export function useCloudSync(): SaveFn {
   }, [!!excalidrawAPI]);
 
   // ── Stable save function (returned to caller) ──────────────────────────
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(
     debounce(
-      async (elements: readonly OrderedExcalidrawElement[], appState: AppState) => {
+      async (
+        elements: readonly OrderedExcalidrawElement[],
+        appState: AppState,
+      ) => {
         // Anti-loop: skip if we recently applied a remote update
-        if (Date.now() - lastExternalUpdateTime.current < ANTI_LOOP_MS) return;
+        if (Date.now() - lastExternalUpdateTime.current < ANTI_LOOP_MS) {
+          return;
+        }
 
         const filtered = (elements ?? []).filter((el) => !el.isDeleted);
         const appStateSnapshot = {
@@ -326,7 +347,9 @@ export function useCloudSync(): SaveFn {
                 updated_by: "frontend",
                 updated_at: new Date().toISOString(),
               });
-            if (error) throw error;
+            if (error) {
+              throw error;
+            }
             appJotaiStore.set(oneShotSyncStatusAtom, "idle");
           } catch (err) {
             console.warn("[OneShot] Supabase upsert failed:", err);

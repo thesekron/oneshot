@@ -10,8 +10,7 @@ The canvas state lives at the root of this repository:
 canvas.excalidraw.json
 ```
 
-The web UI (OneShot running at `http://localhost:3000`) watches this file in real time.
-**Any change you make to this file will be reflected in the UI within ~1 second.**
+The web UI (OneShot running at `http://localhost:3000`) watches this file in real time. **Any change you make to this file will be reflected in the UI within ~1 second.**
 
 ---
 
@@ -23,7 +22,9 @@ The web UI (OneShot running at `http://localhost:3000`) watches this file in rea
 {
   "type": "excalidraw",
   "version": 2,
-  "elements": [ /* array of canvas elements */ ],
+  "elements": [
+    /* array of canvas elements */
+  ],
   "appState": { "viewBackgroundColor": "#1a1a2e" },
   "files": {}
 }
@@ -34,7 +35,7 @@ The web UI (OneShot running at `http://localhost:3000`) watches this file in rea
 Every element has these common fields:
 
 | Field | Description |
-|-------|-------------|
+| --- | --- |
 | `id` | Unique string (use `crypto.randomUUID()` or any unique string) |
 | `type` | `"rectangle"`, `"ellipse"`, `"diamond"`, `"arrow"`, `"text"`, `"frame"` |
 | `x`, `y` | Position in canvas coordinates (top-left origin) |
@@ -73,13 +74,17 @@ To place text **inside** a shape, set `containerId` to the shape's `id`.
 {
   "type": "arrow",
   "startBinding": { "elementId": "<source-id>", "focus": 0, "gap": 8 },
-  "endBinding":   { "elementId": "<target-id>", "focus": 0, "gap": 8 },
-  "points": [[0, 0], [120, 0]],
+  "endBinding": { "elementId": "<target-id>", "focus": 0, "gap": 8 },
+  "points": [
+    [0, 0],
+    [120, 0]
+  ],
   "arrowType": "elbow"
 }
 ```
 
 When connecting with arrows, also add a `boundElements` entry to both endpoint shapes:
+
 ```jsonc
 // on the source shape:
 "boundElements": [{ "id": "<arrow-id>", "type": "arrow" }]
@@ -93,8 +98,10 @@ Use frames to group related elements into labelled sections:
 {
   "type": "frame",
   "name": "Backend Services",
-  "x": 100, "y": 100,
-  "width": 600, "height": 400
+  "x": 100,
+  "y": 100,
+  "width": 600,
+  "height": 400
 }
 ```
 
@@ -116,9 +123,7 @@ for el in data['elements']:
 
 ## Writing to the Canvas
 
-**Always preserve existing elements** unless you intend to modify or delete them.
-To modify an element, increment its `version` field.
-To remove an element, set `"isDeleted": true`.
+**Always preserve existing elements** unless you intend to modify or delete them. To modify an element, increment its `version` field. To remove an element, set `"isDeleted": true`.
 
 Example – append a new rectangle with a text label:
 

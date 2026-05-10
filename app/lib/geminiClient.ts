@@ -69,11 +69,11 @@ export async function generatePromptWithGemini(
           },
           {
             text:
-              `The following JSON is the parsed element structure of the canvas — use it as supplementary context alongside the image:\n\n` +
-              "```json\n" +
-              elementStructure +
-              "\n```\n\n" +
-              "Generate the comprehensive implementation prompt now.",
+              `${
+                `The following JSON is the parsed element structure of the canvas — use it as supplementary context alongside the image:\n\n` +
+                "```json\n"
+              }${elementStructure}\n\`\`\`\n\n` +
+              `Generate the comprehensive implementation prompt now.`,
           },
         ],
       },

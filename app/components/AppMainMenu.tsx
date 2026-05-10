@@ -1,6 +1,4 @@
-import {
-  eyeIcon,
-} from "@oneshot/excalidraw/components/icons";
+import { eyeIcon } from "@oneshot/excalidraw/components/icons";
 import { MainMenu } from "@oneshot/excalidraw/index";
 import React from "react";
 

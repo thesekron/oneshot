@@ -19,10 +19,7 @@ import {
   isTextElement,
 } from "@oneshot/element";
 
-import {
-  getBoundTextElement,
-  redrawTextBoundingBox,
-} from "@oneshot/element";
+import { getBoundTextElement, redrawTextBoundingBox } from "@oneshot/element";
 
 import { CaptureUpdateAction } from "@oneshot/element";
 

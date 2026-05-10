@@ -1,8 +1,5 @@
 import { reseed } from "@oneshot/common";
-import {
-  isElbowArrow,
-  projectFixedPointOntoDiagonal,
-} from "@oneshot/element";
+import { isElbowArrow, projectFixedPointOntoDiagonal } from "@oneshot/element";
 
 import { pointFrom } from "@oneshot/math";
 

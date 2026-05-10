@@ -27,10 +27,7 @@ import { isCurve } from "@oneshot/math/curve";
 import React from "react";
 
 import type { Curve } from "@oneshot/math";
-import type {
-  DebugElement,
-  DebugPolygon,
-} from "@oneshot/element/visualdebug";
+import type { DebugElement, DebugPolygon } from "@oneshot/element/visualdebug";
 import type {
   ElementsMap,
   ExcalidrawArrowElement,

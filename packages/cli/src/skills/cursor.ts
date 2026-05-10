@@ -1,6 +1,7 @@
-import fs from "fs"
-import path from "path"
-import pc from "picocolors"
+import fs from "fs";
+import path from "path";
+
+import pc from "picocolors";
 
 const RULE_CONTENT = `---
 description: Use when user wants to brainstorm, plan a feature, map architecture, visualize systems, or think through any idea visually on a shared canvas.
@@ -95,18 +96,18 @@ fillStyle, strokeWidth, roughness, opacity, version, versionNonce, isDeleted, gr
 
 Text inside shape: set \`containerId\` to parent id.
 Arrow: \`startBinding\`/\`endBinding\` with elementId + add arrow id to both endpoints' \`boundElements\`.
-`
+`;
 
 export async function setupCursorSkill() {
-  const localRulesDir = path.join(process.cwd(), ".cursor", "rules")
+  const localRulesDir = path.join(process.cwd(), ".cursor", "rules");
 
   try {
-    fs.mkdirSync(localRulesDir, { recursive: true })
-    const rulePath = path.join(localRulesDir, "oneshot.mdc")
-    fs.writeFileSync(rulePath, RULE_CONTENT)
-    console.log(pc.green(`  ✔ OneShot rule installed for Cursor`))
-    console.log(pc.dim(`    Location: ${rulePath}`))
+    fs.mkdirSync(localRulesDir, { recursive: true });
+    const rulePath = path.join(localRulesDir, "oneshot.mdc");
+    fs.writeFileSync(rulePath, RULE_CONTENT);
+    console.log(pc.green(`  ✔ OneShot rule installed for Cursor`));
+    console.log(pc.dim(`    Location: ${rulePath}`));
   } catch (err) {
-    throw new Error(`Could not install Cursor rule: ${(err as Error).message}`)
+    throw new Error(`Could not install Cursor rule: ${(err as Error).message}`);
   }
 }

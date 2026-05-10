@@ -12,8 +12,7 @@
 - A **web app** deployed on Vercel at `oneshot-release.vercel.app` that renders the canvas and receives live updates
 - **AI agent skills** that teach Claude Code / Cursor how to write Excalidraw JSON to `workspace.json`
 
-**GitHub repo**: `thesekron/oneshot`
-**Owner**: sekron (masa1doff12@gmail.com)
+**GitHub repo**: `thesekron/oneshot` **Owner**: sekron (masa1doff12@gmail.com)
 
 ---
 
@@ -74,6 +73,7 @@ oneshot/
 ## What Has Been Built
 
 ### Completed
+
 1. **Excalidraw fork rebranded to OneShot** — package names changed to `@oneshot/*`, UI text updated, PWA manifest rebranded
 2. **CLI tool** (`packages/cli/`) — full implementation with `install`, `start`, `sessions` commands, Ably and Supabase sync adapters, skill installation for Claude Code and Cursor
 3. **Landing page** (`app/pages/Landing.tsx`) — marketing page at `/`
@@ -85,6 +85,7 @@ oneshot/
 9. **Scroll fix** — Landing and Docs pages override the global `overflow:hidden` so users can scroll
 
 ### Build Fixes Applied (this session)
+
 - Added missing `FIREBASE_STORAGE_PREFIXES` constant to `app_constants.ts`
 - Fixed `vercel.json` `outputDirectory` from `"app/build"` to `"build"` (Vercel project root is `app/`)
 - Fixed scrolling on Landing/Docs pages (global `overflow:hidden` override)
@@ -96,7 +97,9 @@ oneshot/
 ## What Still Needs Work
 
 ### High Priority — Remaining Excalidraw References
+
 The `.env.development` and `.env.production` files still reference Excalidraw services:
+
 - `VITE_APP_BACKEND_V2_GET_URL` / `POST_URL` → `json.excalidraw.com` (JSON storage backend)
 - `VITE_APP_LIBRARY_URL` → `libraries.excalidraw.com`
 - `VITE_APP_LIBRARY_BACKEND` → Excalidraw's Firebase Cloud Functions
@@ -108,7 +111,9 @@ The `.env.development` and `.env.production` files still reference Excalidraw se
 **Decision needed**: Which of these services should OneShot self-host vs. disable vs. replace?
 
 ### High Priority — Real-Time Sync Integration
+
 The `useCloudSync` hook (`app/hooks/useCloudSync.ts`, 342 lines) already exists and handles:
+
 1. Reading `#sync=ably&key=...` or `#sync=supabase&url=...&anonkey=...` from the URL hash
 2. Connecting to Ably or Supabase
 3. Anti-loop strategy (ignores own echoes via `source`/`updated_by` tags)
@@ -117,30 +122,36 @@ The `useCloudSync` hook (`app/hooks/useCloudSync.ts`, 342 lines) already exists 
 **Status**: The hook is implemented but needs end-to-end testing with the CLI daemon to verify the full flow works: CLI writes `workspace.json` → sync adapter → web canvas renders update.
 
 Additional key files in the sync chain:
+
 - `app/components/OneShotSync.tsx` — React component that triggers the hook
 - `app/hooks/useCloudSync.ts` — The universal sync hook
 - `server/src/index.ts` — Optional Socket.io relay server (alternative to Ably/Supabase)
 
 ### Medium Priority — CLI Publishing
+
 - The CLI is at version `0.1.0` and has never been published to npm
 - The `publish-cli.yml` workflow needs `NPM_TOKEN` secret set in GitHub
 - Need to test the full `npx oneshot-app` flow end-to-end
 
 ### Medium Priority — AI Generation
+
 - There's a Gemini/OpenRouter AI generation feature in the codebase (from earlier commits) — its current state and integration needs review
 - The AI generation panel was configured to open by default on load
 
 ### Medium Priority — Branding Cleanup
+
 - Some code still references "Excalidraw" in collab files, data helpers, etc.
 - The favicon files in `public/` need verification (SVG is custom, but PNGs may still be Excalidraw icons)
 - The file handlers in the PWA manifest still reference `.excalidraw` file extension (intentional since the format IS excalidraw)
 
 ### Low Priority — Infrastructure
+
 - Need a relay/WebSocket server for the `VITE_APP_WS_SERVER_URL` (the old Excalidraw room server won't work for OneShot-specific features)
 - Firebase config in env files is still pointing to Excalidraw's project
 - `.github/FUNDING.yml` has `github: [thesekron]` — may want to add more funding options
 
 ### Low Priority — Testing
+
 - Tests exist but haven't been verified with the rebrand
 - `yarn test:typecheck` may have issues due to package renames
 
@@ -162,6 +173,7 @@ Additional key files in the sync chain:
 ```
 
 The URL hash encodes credentials: `/r/abc123#sync=ably&key=xxx`
+
 - Hash is never sent to the server (browser-only)
 - The web app reads hash params and connects directly to user's Ably/Supabase
 - No data passes through OneShot servers

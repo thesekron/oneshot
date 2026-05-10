@@ -11,10 +11,7 @@ import {
 
 import { API } from "@oneshot/excalidraw/tests/helpers/api";
 import { UI, Keyboard, Pointer } from "@oneshot/excalidraw/tests/helpers/ui";
-import {
-  render,
-  unmountComponent,
-} from "@oneshot/excalidraw/tests/test-utils";
+import { render, unmountComponent } from "@oneshot/excalidraw/tests/test-utils";
 
 import type { LocalPoint } from "@oneshot/math";
 

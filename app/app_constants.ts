@@ -56,4 +56,3 @@ export const COOKIES = {
 } as const;
 
 // OneShot: Plus features enabled for all users by default
-export const isExcalidrawPlusSignedUser = true;

@@ -1,7 +1,8 @@
-import fs from "fs"
-import path from "path"
-import os from "os"
-import pc from "picocolors"
+import fs from "fs";
+import path from "path";
+import os from "os";
+
+import pc from "picocolors";
 
 const SKILL_CONTENT = `---
 name: oneshot
@@ -297,21 +298,23 @@ Add arrow id to \`boundElements\` on both endpoint shapes:
 | Starting from blank without reading | Creates duplicates, ignores prior thinking |
 | Duplicating an existing node | Splits the graph, breaks connections |
 | Explaining before drawing | Words without visual anchor get forgotten |
-`
+`;
 
 export async function setupClaudeCodeSkill() {
-  const skillDir = path.join(os.homedir(), ".claude", "skills", "oneshot")
+  const skillDir = path.join(os.homedir(), ".claude", "skills", "oneshot");
 
   try {
-    fs.mkdirSync(skillDir, { recursive: true })
-    const skillPath = path.join(skillDir, "SKILL.md")
-    fs.writeFileSync(skillPath, SKILL_CONTENT)
+    fs.mkdirSync(skillDir, { recursive: true });
+    const skillPath = path.join(skillDir, "SKILL.md");
+    fs.writeFileSync(skillPath, SKILL_CONTENT);
     // Clean up old flat-file format if it exists
-    const oldPath = path.join(os.homedir(), ".claude", "skills", "oneshot.md")
-    if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath)
-    console.log(pc.green(`  ✔ OneShot skill installed for Claude Code`))
-    console.log(pc.dim(`    Location: ${skillPath}`))
+    const oldPath = path.join(os.homedir(), ".claude", "skills", "oneshot.md");
+    if (fs.existsSync(oldPath)) {
+      fs.unlinkSync(oldPath);
+    }
+    console.log(pc.green(`  ✔ OneShot skill installed for Claude Code`));
+    console.log(pc.dim(`    Location: ${skillPath}`));
   } catch (err) {
-    throw new Error(`Could not install skill: ${(err as Error).message}`)
+    throw new Error(`Could not install skill: ${(err as Error).message}`);
   }
 }
